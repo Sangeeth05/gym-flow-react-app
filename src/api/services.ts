@@ -1,58 +1,96 @@
-import apiClient from './client';
+import apiClient from "./client";
 import {
-  LoginRequest, AuthResponse, Member, CreateMemberDto,
-  Transaction, InventoryItem, Product, PromoCode, Staff,
-  MembershipPlan, DashboardStats, RecentActivity,
-  PaginatedResponse, QueryParams
-} from '../types';
-import * as mock from './mockData';
+  LoginRequest,
+  AuthResponse,
+  Member,
+  CreateMemberDto,
+  Transaction,
+  InventoryItem,
+  Product,
+  PromoCode,
+  Staff,
+  MembershipPlan,
+  DashboardStats,
+  RecentActivity,
+  PaginatedResponse,
+  QueryParams,
+} from "../types";
+import * as mock from "./mockData";
 
 // Toggle between mock and real API
-const USE_MOCK = process.env.REACT_APP_USE_MOCK !== 'false';
+const USE_MOCK = process.env.REACT_APP_USE_MOCK !== "false";
 
-const delay = (ms = 400) => new Promise(r => setTimeout(r, ms));
+const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms));
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
 export const authApi = {
   login: async (data: LoginRequest): Promise<AuthResponse> => {
     if (USE_MOCK) {
       await delay(800);
-      if (data.email === 'admin@gymflow.com' && data.password === 'Admin@123') {
+      if (data.email === "admin@gymflow.com" && data.password === "Admin@123") {
         return {
-          token: 'mock-jwt-token-' + Date.now(),
-          refreshToken: 'mock-refresh-token',
+          token: "mock-jwt-token-" + Date.now(),
+          refreshToken: "mock-refresh-token",
           user: {
-            id: '1', name: 'Admin User', email: data.email,
-            role: 'Admin', gymId: 'GYM-001', gymName: 'GymFlow Fitness Center',
+            id: "1",
+            name: "Admin User",
+            email: data.email,
+            role: "Admin",
+            gymId: "GYM-001",
+            gymName: "GymFlow Fitness Center",
           },
         };
       }
-      throw { response: { data: { message: 'Invalid credentials' } } };
+      // throw { response: { data: { message: "Invalid credentials" } } };
+      const error = new Error("Invalid credentials") as Error & {
+        response?: {
+          data?: {
+            message?: string;
+          };
+        };
+      };
+
+      error.response = {
+        data: {
+          message: "Invalid credentials",
+        },
+      };
+
+      throw error;
     }
-    const res = await apiClient.post<AuthResponse>('/auth/login', data);
+    const res = await apiClient.post<AuthResponse>("/auth/login", data);
     return res.data;
   },
 
   logout: async () => {
-    if (!USE_MOCK) await apiClient.post('/auth/logout');
+    if (!USE_MOCK) await apiClient.post("/auth/logout");
   },
 };
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 export const dashboardApi = {
   getStats: async (): Promise<DashboardStats> => {
-    if (USE_MOCK) { await delay(500); return mock.mockDashboardStats; }
-    const res = await apiClient.get<DashboardStats>('/dashboard/stats');
+    if (USE_MOCK) {
+      await delay(500);
+      return mock.mockDashboardStats;
+    }
+    const res = await apiClient.get<DashboardStats>("/dashboard/stats");
     return res.data;
   },
   getRecentActivity: async (): Promise<RecentActivity[]> => {
-    if (USE_MOCK) { await delay(300); return mock.mockRecentActivity; }
-    const res = await apiClient.get<RecentActivity[]>('/dashboard/activity');
+    if (USE_MOCK) {
+      await delay(300);
+      return mock.mockRecentActivity;
+    }
+    const res = await apiClient.get<RecentActivity[]>("/dashboard/activity");
     return res.data;
   },
   getRevenueChart: async () => {
-    if (USE_MOCK) { await delay(400); return mock.mockRevenueChart; }
-    const res = await apiClient.get('/dashboard/revenue-chart');
+    if (USE_MOCK) {
+      await delay(400);
+      return mock.mockRevenueChart;
+    }
+    const res = await apiClient.get("/dashboard/revenue-chart");
     return res.data;
   },
 };
@@ -65,22 +103,28 @@ export const membersApi = {
       let data = [...mock.mockMembers];
       if (params?.search) {
         const q = params.search.toLowerCase();
-        data = data.filter(m =>
-          m.firstName.toLowerCase().includes(q) ||
-          m.lastName.toLowerCase().includes(q) ||
-          m.email.toLowerCase().includes(q) ||
-          m.memberId.toLowerCase().includes(q)
+        data = data.filter(
+          (m) =>
+            m.firstName.toLowerCase().includes(q) ||
+            m.lastName.toLowerCase().includes(q) ||
+            m.email.toLowerCase().includes(q) ||
+            m.memberId.toLowerCase().includes(q),
         );
       }
-      if (params?.status) data = data.filter(m => m.status === params.status);
+      if (params?.status) data = data.filter((m) => m.status === params.status);
       return { data, total: data.length, page: 1, pageSize: 20, totalPages: 1 };
     }
-    const res = await apiClient.get<PaginatedResponse<Member>>('/members', { params });
+    const res = await apiClient.get<PaginatedResponse<Member>>("/members", {
+      params,
+    });
     return res.data;
   },
 
   getById: async (id: string): Promise<Member> => {
-    if (USE_MOCK) { await delay(200); return mock.mockMembers.find(m => m.id === id)!; }
+    if (USE_MOCK) {
+      await delay(200);
+      return mock.mockMembers.find((m) => m.id === id)!;
+    }
     const res = await apiClient.get<Member>(`/members/${id}`);
     return res.data;
   },
@@ -89,23 +133,32 @@ export const membersApi = {
     if (USE_MOCK) {
       await delay(600);
       const newMember: Member = {
-        ...data, id: String(Date.now()), memberId: 'GF-' + String(mock.mockMembers.length + 1).padStart(4, '0'),
-        status: 'Active', totalPayments: 0, createdAt: new Date().toISOString(),
-        membershipPlanName: mock.mockMembershipPlans.find(p => p.id === data.membershipPlanId)?.name || '',
-        expiryDate: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0],
+        ...data,
+        id: String(Date.now()),
+        memberId: "GF-" + String(mock.mockMembers.length + 1).padStart(4, "0"),
+        status: "Active",
+        totalPayments: 0,
+        createdAt: new Date().toISOString(),
+        membershipPlanName:
+          mock.mockMembershipPlans.find((p) => p.id === data.membershipPlanId)
+            ?.name || "",
+        expiryDate: new Date(Date.now() + 30 * 86400000)
+          .toISOString()
+          .split("T")[0],
       };
       mock.mockMembers.push(newMember);
       return newMember;
     }
-    const res = await apiClient.post<Member>('/members', data);
+    const res = await apiClient.post<Member>("/members", data);
     return res.data;
   },
 
   update: async (id: string, data: Partial<Member>): Promise<Member> => {
     if (USE_MOCK) {
       await delay(500);
-      const idx = mock.mockMembers.findIndex(m => m.id === id);
-      if (idx !== -1) mock.mockMembers[idx] = { ...mock.mockMembers[idx], ...data };
+      const idx = mock.mockMembers.findIndex((m) => m.id === id);
+      if (idx !== -1)
+        mock.mockMembers[idx] = { ...mock.mockMembers[idx], ...data };
       return mock.mockMembers[idx];
     }
     const res = await apiClient.put<Member>(`/members/${id}`, data);
@@ -113,7 +166,10 @@ export const membersApi = {
   },
 
   delete: async (id: string): Promise<void> => {
-    if (USE_MOCK) { await delay(400); return; }
+    if (USE_MOCK) {
+      await delay(400);
+      return;
+    }
     await apiClient.delete(`/members/${id}`);
   },
 };
@@ -121,30 +177,39 @@ export const membersApi = {
 // ─── Membership Plans ─────────────────────────────────────────────────────────
 export const plansApi = {
   getAll: async (): Promise<MembershipPlan[]> => {
-    if (USE_MOCK) { await delay(300); return mock.mockMembershipPlans; }
-    const res = await apiClient.get<MembershipPlan[]>('/membership-plans');
+    if (USE_MOCK) {
+      await delay(300);
+      return mock.mockMembershipPlans;
+    }
+    const res = await apiClient.get<MembershipPlan[]>("/membership-plans");
     return res.data;
   },
 };
 
 // ─── Finance ─────────────────────────────────────────────────────────────────
 export const financeApi = {
-  getTransactions: async (params?: QueryParams): Promise<PaginatedResponse<Transaction>> => {
+  getTransactions: async (
+    params?: QueryParams,
+  ): Promise<PaginatedResponse<Transaction>> => {
     if (USE_MOCK) {
       await delay(400);
       let data = [...mock.mockTransactions];
       if (params?.search) {
         const q = params.search.toLowerCase();
-        data = data.filter(t =>
-          t.transactionId.toLowerCase().includes(q) ||
-          (t.memberName?.toLowerCase().includes(q)) ||
-          t.description.toLowerCase().includes(q)
+        data = data.filter(
+          (t) =>
+            t.transactionId.toLowerCase().includes(q) ||
+            t.memberName?.toLowerCase().includes(q) ||
+            t.description.toLowerCase().includes(q),
         );
       }
-      if (params?.status) data = data.filter(t => t.status === params.status);
+      if (params?.status) data = data.filter((t) => t.status === params.status);
       return { data, total: data.length, page: 1, pageSize: 20, totalPages: 1 };
     }
-    const res = await apiClient.get<PaginatedResponse<Transaction>>('/finance/transactions', { params });
+    const res = await apiClient.get<PaginatedResponse<Transaction>>(
+      "/finance/transactions",
+      { params },
+    );
     return res.data;
   },
 
@@ -158,31 +223,39 @@ export const financeApi = {
         overduePayments: 999,
         revenueByMonth: mock.mockRevenueChart,
         revenueByType: [
-          { type: 'Membership', amount: 198000 },
-          { type: 'Products', amount: 54000 },
-          { type: 'PT Sessions', amount: 24000 },
-          { type: 'Other', amount: 8500 },
+          { type: "Membership", amount: 198000 },
+          { type: "Products", amount: 54000 },
+          { type: "PT Sessions", amount: 24000 },
+          { type: "Other", amount: 8500 },
         ],
       };
     }
-    const res = await apiClient.get('/finance/summary');
+    const res = await apiClient.get("/finance/summary");
     return res.data;
   },
 };
 
 // ─── Inventory ───────────────────────────────────────────────────────────────
 export const inventoryApi = {
-  getAll: async (params?: QueryParams): Promise<PaginatedResponse<InventoryItem>> => {
+  getAll: async (
+    params?: QueryParams,
+  ): Promise<PaginatedResponse<InventoryItem>> => {
     if (USE_MOCK) {
       await delay(400);
       let data = [...mock.mockInventory];
       if (params?.search) {
         const q = params.search.toLowerCase();
-        data = data.filter(i => i.name.toLowerCase().includes(q) || i.sku.toLowerCase().includes(q));
+        data = data.filter(
+          (i) =>
+            i.name.toLowerCase().includes(q) || i.sku.toLowerCase().includes(q),
+        );
       }
       return { data, total: data.length, page: 1, pageSize: 20, totalPages: 1 };
     }
-    const res = await apiClient.get<PaginatedResponse<InventoryItem>>('/inventory', { params });
+    const res = await apiClient.get<PaginatedResponse<InventoryItem>>(
+      "/inventory",
+      { params },
+    );
     return res.data;
   },
 };
@@ -195,11 +268,17 @@ export const productsApi = {
       let data = [...mock.mockProducts];
       if (params?.search) {
         const q = params.search.toLowerCase();
-        data = data.filter(p => p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q));
+        data = data.filter(
+          (p) =>
+            p.name.toLowerCase().includes(q) ||
+            p.brand.toLowerCase().includes(q),
+        );
       }
       return { data, total: data.length, page: 1, pageSize: 20, totalPages: 1 };
     }
-    const res = await apiClient.get<PaginatedResponse<Product>>('/products', { params });
+    const res = await apiClient.get<PaginatedResponse<Product>>("/products", {
+      params,
+    });
     return res.data;
   },
 };
@@ -207,8 +286,11 @@ export const productsApi = {
 // ─── Promo Codes ─────────────────────────────────────────────────────────────
 export const promoApi = {
   getAll: async (): Promise<PromoCode[]> => {
-    if (USE_MOCK) { await delay(400); return mock.mockPromoCodes; }
-    const res = await apiClient.get<PromoCode[]>('/promo-codes');
+    if (USE_MOCK) {
+      await delay(400);
+      return mock.mockPromoCodes;
+    }
+    const res = await apiClient.get<PromoCode[]>("/promo-codes");
     return res.data;
   },
 };
@@ -216,8 +298,11 @@ export const promoApi = {
 // ─── Staff ───────────────────────────────────────────────────────────────────
 export const staffApi = {
   getAll: async (): Promise<Staff[]> => {
-    if (USE_MOCK) { await delay(400); return mock.mockStaff; }
-    const res = await apiClient.get<Staff[]>('/staff');
+    if (USE_MOCK) {
+      await delay(400);
+      return mock.mockStaff;
+    }
+    const res = await apiClient.get<Staff[]>("/staff");
     return res.data;
   },
 };
@@ -229,14 +314,14 @@ export const dashboardSummaryApi = {
       await delay(300);
       return {
         revenueByType: [
-          { type: 'Membership', amount: 198000 },
-          { type: 'Products', amount: 54000 },
-          { type: 'PT Sessions', amount: 24000 },
-          { type: 'Other', amount: 8500 },
+          { type: "Membership", amount: 198000 },
+          { type: "Products", amount: 54000 },
+          { type: "PT Sessions", amount: 24000 },
+          { type: "Other", amount: 8500 },
         ],
       };
     }
-    const res = await apiClient.get('/dashboard/summary');
+    const res = await apiClient.get("/dashboard/summary");
     return res.data;
   },
 };

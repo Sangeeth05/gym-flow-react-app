@@ -1,32 +1,35 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Dumbbell, Eye, EyeOff, Mail, Lock } from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
-import { authApi } from '../api/services';
-import { Button, Input } from '../components/ui';
-import toast from 'react-hot-toast';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Dumbbell, Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { useAuthStore } from "../store/authStore";
+import { authApi } from "../api/services";
+import { Button } from "../components/ui";
+import toast from "react-hot-toast";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
-  const [email, setEmail] = useState('admin@gymflow.com');
-  const [password, setPassword] = useState('Admin@123');
+  const [email, setEmail] = useState("admin@gymflow.com");
+  const [password, setPassword] = useState("Admin@123");
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) { setError('Please fill in all fields'); return; }
+    if (!email || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
     setLoading(true);
-    setError('');
+    setError("");
     try {
       const res = await authApi.login({ email, password });
       setAuth(res.user, res.token, res.refreshToken);
       toast.success(`Welcome back, ${res.user.name}!`);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err: any) {
-      setError(err?.response?.data?.message || 'Invalid email or password');
+      setError(err?.response?.data?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -42,10 +45,14 @@ const LoginPage: React.FC = () => {
       </div>
 
       {/* Grid pattern */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: 'linear-gradient(rgba(249,115,22,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.5) 1px, transparent 1px)',
-        backgroundSize: '60px 60px'
-      }} />
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(249,115,22,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.5) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
       <div className="w-full max-w-md relative animate-slide-up">
         {/* Card */}
@@ -57,12 +64,16 @@ const LoginPage: React.FC = () => {
                 <Dumbbell className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="font-bold text-white text-lg leading-none">GymFlow</h1>
+                <h1 className="font-bold text-white text-lg leading-none">
+                  GymFlow
+                </h1>
                 <p className="text-xs text-slate-500 mt-0.5">Admin Portal</p>
               </div>
             </div>
             <h2 className="text-2xl font-bold text-white">Welcome back</h2>
-            <p className="text-sm text-slate-400 mt-1">Sign in to manage your gym</p>
+            <p className="text-sm text-slate-400 mt-1">
+              Sign in to manage your gym
+            </p>
           </div>
 
           {/* Form */}
@@ -80,7 +91,7 @@ const LoginPage: React.FC = () => {
                 <input
                   type="email"
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@gymflow.com"
                   className="input-field pl-9"
                   autoComplete="email"
@@ -93,19 +104,23 @@ const LoginPage: React.FC = () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                 <input
-                  type={showPass ? 'text' : 'password'}
+                  type={showPass ? "text" : "password"}
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="input-field pl-9 pr-9"
                   autoComplete="current-password"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPass(s => !s)}
+                  onClick={() => setShowPass((s) => !s)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
                 >
-                  {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPass ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
             </div>
@@ -115,20 +130,35 @@ const LoginPage: React.FC = () => {
                 <input type="checkbox" className="rounded" />
                 <span className="text-sm text-slate-400">Remember me</span>
               </label>
-              <button type="button" className="text-sm text-brand-400 hover:text-brand-300 transition-colors">
+              <button
+                type="button"
+                className="text-sm text-brand-400 hover:text-brand-300 transition-colors"
+              >
                 Forgot password?
               </button>
             </div>
 
-            <Button type="submit" variant="primary" className="w-full" loading={loading} size="lg">
+            <Button
+              type="submit"
+              variant="primary"
+              className="w-full"
+              loading={loading}
+              size="lg"
+            >
               Sign In
             </Button>
 
             {/* Demo credentials hint */}
             <div className="bg-dark-700 rounded-lg p-3 border border-dark-500">
-              <p className="text-xs text-slate-400 font-semibold mb-1">Demo Credentials</p>
-              <p className="text-xs text-slate-500">Email: <span className="text-brand-400">admin@gymflow.com</span></p>
-              <p className="text-xs text-slate-500">Password: <span className="text-brand-400">Admin@123</span></p>
+              <p className="text-xs text-slate-400 font-semibold mb-1">
+                Demo Credentials
+              </p>
+              <p className="text-xs text-slate-500">
+                Email: <span className="text-brand-400">admin@gymflow.com</span>
+              </p>
+              <p className="text-xs text-slate-500">
+                Password: <span className="text-brand-400">Admin@123</span>
+              </p>
             </div>
           </form>
         </div>
