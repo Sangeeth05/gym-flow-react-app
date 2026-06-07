@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS variables (overridden by themeStore.applyTheme) ── */
+:root {
+  --color-brand-400: #fb923c;
+  --color-brand-500: #f97316;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #c2410c;
+
+  --color-bg-900: #0a0a0f;
+  --color-bg-800: #111118;
+  --color-bg-700: #1a1a24;
+  --color-bg-600: #22222f;
+  --color-bg-500: #2d2d3d;
+  --color-bg-400: #3d3d52;
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { font-family: 'DM Sans', sans-serif; }
+  body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--color-bg-900);
+    color: #fff;
+  }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--color-bg-800); }
+  ::-webkit-scrollbar-thumb { background: var(--color-bg-400); border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-brand-600); }
+}
+
+@layer components {
+  .card {
+    background-color: var(--color-bg-800);
+    border: 1px solid var(--color-bg-600);
+    border-radius: 0.75rem;
+  }
+  .card-hover { @apply card hover:border-[var(--color-bg-400)] transition-all duration-200; }
+
+  .btn-primary {
+    background-color: var(--color-brand-500);
+    @apply text-white font-semibold px-4 py-2 rounded-lg transition-all duration-150 active:scale-95 text-sm inline-flex items-center justify-center gap-2;
+  }
+  .btn-primary:hover { background-color: var(--color-brand-600); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-secondary {
+    background-color: var(--color-bg-600);
+    border: 1px solid var(--color-bg-400);
+    @apply text-white px-4 py-2 rounded-lg transition-all duration-150 active:scale-95 text-sm inline-flex items-center justify-center gap-2;
+  }
+  .btn-secondary:hover { background-color: var(--color-bg-500); }
+
+  .btn-ghost {
+    @apply text-slate-300 hover:text-white px-3 py-1.5 rounded-lg transition-all duration-150 text-sm inline-flex items-center gap-2;
+  }
+  .btn-ghost:hover { background-color: var(--color-bg-700); }
+
+  .btn-danger {
+    @apply bg-red-600/20 hover:bg-red-600/40 text-red-400 hover:text-red-300 px-4 py-2 rounded-lg transition-all duration-150 active:scale-95 text-sm border border-red-600/30 inline-flex items-center justify-center gap-2;
+  }
+
+  .input-field {
+    background-color: var(--color-bg-700);
+    border: 1px solid var(--color-bg-500);
+    @apply text-white placeholder-slate-500 rounded-lg px-3 py-2 text-sm focus:outline-none transition-all duration-150 w-full;
+  }
+  .input-field:focus {
+    border-color: var(--color-brand-500);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-brand-500) 20%, transparent);
+  }
+
+  .label { @apply text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5 block; }
+
+  .badge { @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-semibold; }
+  .badge-green  { @apply badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/20; }
+  .badge-red    { @apply badge bg-red-500/15 text-red-400 border border-red-500/20; }
+  .badge-yellow { @apply badge bg-yellow-500/15 text-yellow-400 border border-yellow-500/20; }
+  .badge-blue   { @apply badge bg-blue-500/15 text-blue-400 border border-blue-500/20; }
+  .badge-orange { @apply badge bg-orange-500/15 text-orange-400 border border-orange-500/20; }
+  .badge-purple { @apply badge bg-purple-500/15 text-purple-400 border border-purple-500/20; }
+
+  .stat-card { @apply card p-5 flex flex-col gap-3; }
+  .page-title { @apply font-bold text-2xl text-white; }
+  .page-subtitle { @apply text-sm text-slate-400 mt-0.5; }
+  .divider { border-top: 1px solid var(--color-bg-600); }
+
+  .table-wrapper { @apply card overflow-hidden; }
+  table.data-table { @apply w-full; }
+  table.data-table thead tr { border-bottom: 1px solid var(--color-bg-600); }
+  table.data-table thead th { @apply px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider; }
+  table.data-table tbody tr { border-bottom: 1px solid var(--color-bg-700); transition: background 0.1s; }
+  table.data-table tbody tr:last-child { border-bottom: none; }
+  table.data-table tbody tr:hover { background-color: color-mix(in srgb, var(--color-bg-700) 50%, transparent); }
+  table.data-table tbody td { @apply px-4 py-3 text-sm text-slate-300; }
+
+  .modal-overlay { @apply fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4; }
+  .modal-box {
+    background-color: var(--color-bg-800);
+    border: 1px solid var(--color-bg-500);
+    @apply rounded-2xl w-full shadow-2xl;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-header { @apply flex items-center justify-between p-5; border-bottom: 1px solid var(--color-bg-600); }
+  .modal-body   { @apply p-5; }
+  .modal-footer { @apply flex items-center justify-end gap-3 p-5; border-top: 1px solid var(--color-bg-600); }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400
+           hover:text-white transition-all duration-150 cursor-pointer;
+  }
+  .sidebar-item:hover { background-color: color-mix(in srgb, var(--color-bg-600) 80%, transparent); }
+  .sidebar-item.active {
+    color: var(--color-brand-400);
+    background-color: color-mix(in srgb, var(--color-brand-500) 15%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-brand-500) 20%, transparent);
+  }
+}
+
+@layer utilities {
+  .text-brand { color: var(--color-brand-500); }
+  .text-brand-light { color: var(--color-brand-400); }
+  .bg-brand { background-color: var(--color-brand-500); }
+  .border-brand { border-color: var(--color-brand-500); }
+  .text-gradient {
+    background: linear-gradient(135deg, var(--color-brand-400), var(--color-brand-600));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideInRight { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+
+.animate-fade-in      { animation: fadeIn 0.3s ease-out; }
+.animate-slide-up     { animation: slideUp 0.4s ease-out; }
+.animate-slide-in-right { animation: slideInRight 0.3s ease-out; }
