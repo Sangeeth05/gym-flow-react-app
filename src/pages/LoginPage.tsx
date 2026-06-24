@@ -150,15 +150,7 @@ const LoginPage: React.FC = () => {
 
             {/* Demo credentials hint */}
             <div className="bg-dark-700 rounded-lg p-3 border border-dark-500">
-              <p className="text-xs text-slate-400 font-semibold mb-1">
-                Demo Credentials
-              </p>
-              <p className="text-xs text-slate-500">
-                Email: <span className="text-brand-400">admin@gymflow.com</span>
-              </p>
-              <p className="text-xs text-slate-500">
-                Password: <span className="text-brand-400">Admin@123</span>
-              </p>
+            
             </div>
           </form>
         </div>
