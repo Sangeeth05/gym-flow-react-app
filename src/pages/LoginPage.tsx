@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
   const [email, setEmail] = useState("admin@gymflow.com");
-  const [password, setPassword] = useState("Admin@123");
+  const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
