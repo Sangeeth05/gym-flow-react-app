@@ -149,14 +149,14 @@ const LoginPage: React.FC = () => {
             </Button>
 
             {/* Demo credentials hint */}
-            <div className="bg-dark-700 rounded-lg p-3 border border-dark-500">
+            {/* <div className="bg-dark-700 rounded-lg p-3 border border-dark-500">
             
-            </div>
+            </div> */}
           </form>
         </div>
 
         <p className="text-center text-xs text-slate-600 mt-4">
-          © 2024 GymFlow. All rights reserved.
+          © 2026 GymFlow. All rights reserved.
         </p>
       </div>
     </div>
