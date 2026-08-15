@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "gymflow-management-system",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,8 +12,10 @@
     "@types/jest": "^27.5.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "antd": "^6.6.0",
     "axios": "^1.16.0",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.21",
     "lucide-react": "^1.14.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
