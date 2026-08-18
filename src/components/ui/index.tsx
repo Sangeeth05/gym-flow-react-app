@@ -255,6 +255,37 @@ export const SearchInput: React.FC<SearchInputProps> = ({ value, onChange, place
   </div>
 );
 
+// ─── Form Field ──────────────────────────────────────────────────────────────
+interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
+  icon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  error?: string;
+}
+
+export const FormField: React.FC<FormFieldProps> = ({
+  label, icon, rightIcon, error, className = '', ...rest
+}) => (
+  <div className="space-y-1">
+    <label className="label">{label}</label>
+    <div className="relative">
+      {icon && (
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+          {icon}
+        </span>
+      )}
+      <input
+        className={`input-field w-full ${icon ? 'pl-9' : ''} ${rightIcon ? 'pr-9' : ''} ${error ? 'border-red-500' : ''} ${className}`}
+        {...rest}
+      />
+      {rightIcon && (
+        <span className="absolute right-3 top-1/2 -translate-y-1/2">{rightIcon}</span>
+      )}
+    </div>
+    {error && <p className="text-xs text-red-400">{error}</p>}
+  </div>
+);
+
 // ─── Loading Spinner ─────────────────────────────────────────────────────────
 export const Spinner: React.FC<{ className?: string }> = ({ className = '' }) => (
   <div className={`flex items-center justify-center ${className}`}>

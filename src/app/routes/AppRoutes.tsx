@@ -7,6 +7,7 @@ import ProtectedRoute from './ProtectedRoute';
 import RoleRoute from './RoleRoute';
 
 import LoginPage from '../../auth/LoginPage';
+import RegisterPage from '../../auth/RegisterPage';
 
 import GymAdminLayout from '../../layouts/GymAdminLayout';
 import SuperAdminLayout from '../../layouts/SuperAdminLayout';
@@ -61,10 +62,11 @@ const SmartRedirect: React.FC = () => {
 const AppRoutes: React.FC = () => (
   <Routes>
     <Route path="/login" element={<LoginPage />} />
+    <Route path="/register" element={<RegisterPage />} />
 
     <Route element={<ProtectedRoute />}>
       {/* ── Gym Admin Portal ───────────────────────────────────────────── */}
-      <Route element={<RoleRoute roles={['Admin', 'Staff']} />}>
+      <Route element={<RoleRoute roles={['GymAdmin', 'Staff']} />}>
         <Route element={<GymAdminLayout />}>
           <Route path="/gym-admin/dashboard" element={<Dashboard />} />
           <Route path="/gym-admin/members" element={<MembersPage />} />

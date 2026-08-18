@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDebounce } from '../../../hooks/useDebounce';
 import { Package, AlertTriangle, XCircle, CheckCircle, Plus, Eye, Edit, Trash2 } from 'lucide-react';
 import { Badge, SearchInput, StatCard, Spinner, EmptyState, Modal, Button, Input, Select, Textarea, ConfirmDialog } from '../../../components/ui';
 import { inventoryApi } from '../../../api/endpoints';
@@ -167,11 +168,13 @@ const InventoryPage: React.FC = () => {
   const [viewItem, setViewItem] = useState<InventoryItem | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
+  const debouncedSearch = useDebounce(search);
+
   const load = async () => {
     setLoading(true);
-    inventoryApi.getAll({ search, category: catFilter || undefined }).then(r => { setItems(r.data as InventoryItem[]); setLoading(false); });
+    inventoryApi.getAll({ search: debouncedSearch, category: catFilter || undefined }).then(r => { setItems(r.data as InventoryItem[]); setLoading(false); });
   };
-  useEffect(() => { load(); }, [search, catFilter]);
+  useEffect(() => { load(); }, [debouncedSearch, catFilter]);
 
   const handleDelete = async () => {
     if (!deleteId) return;

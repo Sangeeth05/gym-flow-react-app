@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDebounce } from '../../../hooks/useDebounce';
 import { CreditCard, TrendingUp, Clock, AlertCircle, Plus, X, Eye } from 'lucide-react';
 import { Badge, SearchInput, StatCard, Spinner, EmptyState, Modal, Button, Input, Select, DatePicker } from '../../../components/ui';
 import { financeApi, membersApi } from '../../../api/endpoints';
@@ -153,11 +154,13 @@ const FinancePage: React.FC = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [viewTxn, setViewTxn] = useState<Transaction | null>(null);
 
+  const debouncedSearch = useDebounce(search);
+
   const load = async () => {
     setLoading(true);
     try {
       const [t, s] = await Promise.all([
-        financeApi.getTransactions({ search, status: statusFilter || undefined }),
+        financeApi.getTransactions({ search: debouncedSearch, status: statusFilter || undefined }),
         financeApi.getSummary(),
       ]);
       setTransactions(t.data);
@@ -165,7 +168,7 @@ const FinancePage: React.FC = () => {
     } finally { setLoading(false); }
   };
 
-  useEffect(() => { load(); }, [search, statusFilter]);
+  useEffect(() => { load(); }, [debouncedSearch, statusFilter]);
 
   const fmt = (n: number) =>
     new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n);

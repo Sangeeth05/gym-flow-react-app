@@ -1,4 +1,3 @@
-import apiClient from '../axios';
 import {
   Member,
   CreateMemberDto,
@@ -15,8 +14,31 @@ import {
 } from '../../types';
 import * as mock from '../mockData';
 
+import {
+  getDashboardStats,
+  getDashboardActivity,
+  getDashboardRevenueChart,
+  getDashboardSummary,
+} from '../generated/dashboard/dashboard';
+import {
+  getAllMembers,
+  getMemberById,
+  createMember as genCreateMember,
+  updateMember as genUpdateMember,
+  deleteMember as genDeleteMember,
+} from '../generated/members/members';
+import { getAllMembershipPlans } from '../generated/membership-plans/membership-plans';
+import { getTransactions, getFinanceSummary } from '../generated/finance/finance';
+import { getAllInventory } from '../generated/inventory/inventory';
+import { getAllProducts } from '../generated/products/products';
+import { getAllPromoCodes } from '../generated/promo-codes/promo-codes';
+import { getAllStaff } from '../generated/staff/staff';
+
 const USE_MOCK = process.env.REACT_APP_USE_MOCK !== 'false';
 const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms));
+
+// Generated functions are typed as Promise<void> but resolve to response.data at runtime.
+const cast = <T>(p: Promise<unknown>): Promise<T> => p as Promise<T>;
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 export const dashboardApi = {
@@ -25,24 +47,23 @@ export const dashboardApi = {
       await delay(500);
       return mock.mockDashboardStats;
     }
-    const res = await apiClient.get<DashboardStats>('/dashboard/stats');
-    return res.data;
+    return cast<DashboardStats>(getDashboardStats());
   },
+
   getRecentActivity: async (): Promise<RecentActivity[]> => {
     if (USE_MOCK) {
       await delay(300);
       return mock.mockRecentActivity;
     }
-    const res = await apiClient.get<RecentActivity[]>('/dashboard/activity');
-    return res.data;
+    return cast<RecentActivity[]>(getDashboardActivity());
   },
+
   getRevenueChart: async () => {
     if (USE_MOCK) {
       await delay(400);
       return mock.mockRevenueChart;
     }
-    const res = await apiClient.get('/dashboard/revenue-chart');
-    return res.data;
+    return cast<{ month: string; revenue: number; expenses: number }[]>(getDashboardRevenueChart());
   },
 };
 
@@ -65,8 +86,7 @@ export const membersApi = {
       if (params?.status) data = data.filter((m) => m.status === params.status);
       return { data, total: data.length, page: 1, pageSize: 20, totalPages: 1 };
     }
-    const res = await apiClient.get<PaginatedResponse<Member>>('/members', { params });
-    return res.data;
+    return cast<PaginatedResponse<Member>>(getAllMembers(params));
   },
 
   getById: async (id: string): Promise<Member> => {
@@ -74,8 +94,7 @@ export const membersApi = {
       await delay(200);
       return mock.mockMembers.find((m) => m.id === id)!;
     }
-    const res = await apiClient.get<Member>(`/members/${id}`);
-    return res.data;
+    return cast<Member>(getMemberById(id));
   },
 
   create: async (data: CreateMemberDto): Promise<Member> => {
@@ -95,8 +114,7 @@ export const membersApi = {
       mock.mockMembers.push(newMember);
       return newMember;
     }
-    const res = await apiClient.post<Member>('/members', data);
-    return res.data;
+    return cast<Member>(genCreateMember(data));
   },
 
   update: async (id: string, data: Partial<Member>): Promise<Member> => {
@@ -106,8 +124,7 @@ export const membersApi = {
       if (idx !== -1) mock.mockMembers[idx] = { ...mock.mockMembers[idx], ...data };
       return mock.mockMembers[idx];
     }
-    const res = await apiClient.put<Member>(`/members/${id}`, data);
-    return res.data;
+    return cast<Member>(genUpdateMember(id, data as any));
   },
 
   delete: async (id: string): Promise<void> => {
@@ -115,7 +132,7 @@ export const membersApi = {
       await delay(400);
       return;
     }
-    await apiClient.delete(`/members/${id}`);
+    await genDeleteMember(id);
   },
 };
 
@@ -126,8 +143,7 @@ export const plansApi = {
       await delay(300);
       return mock.mockMembershipPlans;
     }
-    const res = await apiClient.get<MembershipPlan[]>('/membership-plans');
-    return res.data;
+    return cast<MembershipPlan[]>(getAllMembershipPlans());
   },
 };
 
@@ -149,8 +165,7 @@ export const financeApi = {
       if (params?.status) data = data.filter((t) => t.status === params.status);
       return { data, total: data.length, page: 1, pageSize: 20, totalPages: 1 };
     }
-    const res = await apiClient.get<PaginatedResponse<Transaction>>('/finance/transactions', { params });
-    return res.data;
+    return cast<PaginatedResponse<Transaction>>(getTransactions(params));
   },
 
   getSummary: async () => {
@@ -170,8 +185,7 @@ export const financeApi = {
         ],
       };
     }
-    const res = await apiClient.get('/finance/summary');
-    return res.data;
+    return getFinanceSummary();
   },
 };
 
@@ -189,8 +203,7 @@ export const inventoryApi = {
       }
       return { data, total: data.length, page: 1, pageSize: 20, totalPages: 1 };
     }
-    const res = await apiClient.get<PaginatedResponse<InventoryItem>>('/inventory', { params });
-    return res.data;
+    return cast<PaginatedResponse<InventoryItem>>(getAllInventory(params));
   },
 };
 
@@ -208,8 +221,7 @@ export const productsApi = {
       }
       return { data, total: data.length, page: 1, pageSize: 20, totalPages: 1 };
     }
-    const res = await apiClient.get<PaginatedResponse<Product>>('/products', { params });
-    return res.data;
+    return cast<PaginatedResponse<Product>>(getAllProducts(params));
   },
 };
 
@@ -220,8 +232,7 @@ export const promoApi = {
       await delay(400);
       return mock.mockPromoCodes;
     }
-    const res = await apiClient.get<PromoCode[]>('/promo-codes');
-    return res.data;
+    return cast<PromoCode[]>(getAllPromoCodes());
   },
 };
 
@@ -232,8 +243,7 @@ export const staffApi = {
       await delay(400);
       return mock.mockStaff;
     }
-    const res = await apiClient.get<Staff[]>('/staff');
-    return res.data;
+    return cast<Staff[]>(getAllStaff());
   },
 };
 
@@ -251,7 +261,6 @@ export const dashboardSummaryApi = {
         ],
       };
     }
-    const res = await apiClient.get('/dashboard/summary');
-    return res.data;
+    return getDashboardSummary();
   },
 };

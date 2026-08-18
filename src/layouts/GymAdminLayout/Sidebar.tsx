@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import { authApi } from "../../auth/authService";
+import { ConfirmDialog } from "../../components/ui";
 import toast from "react-hot-toast";
 
 const navItems = [
@@ -39,6 +40,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -110,7 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
           </div>
         )}
         <button
-          onClick={handleLogout}
+          onClick={() => setShowConfirm(true)}
           className={`sidebar-item w-full hover:bg-red-600/15 hover:text-red-400 ${collapsed ? "justify-center px-2" : ""}`}
           title={collapsed ? "Logout" : undefined}
         >
@@ -131,6 +133,15 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
           )}
         </button>
       </div>
+
+      <ConfirmDialog
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={handleLogout}
+        title="Confirm Logout"
+        message="Are you sure you want to log out?"
+        confirmLabel="Logout"
+      />
     </aside>
   );
 };

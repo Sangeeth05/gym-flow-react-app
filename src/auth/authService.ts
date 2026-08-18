@@ -1,5 +1,5 @@
-import apiClient from '../api/axios';
 import { LoginRequest, AuthResponse } from '../types';
+import { login, logout } from '../api/generated/auth/auth';
 
 const USE_MOCK = process.env.REACT_APP_USE_MOCK !== 'false';
 const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms));
@@ -16,7 +16,7 @@ export const authApi = {
             id: '1',
             name: 'Admin User',
             email: data.email,
-            role: 'Admin',
+            role: 'GymAdmin',
             gymId: 'GYM-001',
             gymName: 'GymFlow Fitness Center',
           },
@@ -28,11 +28,10 @@ export const authApi = {
       error.response = { data: { message: 'Invalid credentials' } };
       throw error;
     }
-    const res = await apiClient.post<AuthResponse>('/auth/login', data);
-    return res.data;
+    return login({ email: data.email, password: data.password }) as unknown as Promise<AuthResponse>;
   },
 
-  logout: async () => {
-    if (!USE_MOCK) await apiClient.post('/auth/logout');
+  logout: async (refreshToken?: string) => {
+    if (!USE_MOCK) await logout({ refreshToken });
   },
 };

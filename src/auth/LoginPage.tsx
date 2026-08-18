@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Dumbbell, Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { useAuthStore } from "../store/authStore";
 import { authApi } from "./authService";
-import { Button } from "../components/ui";
+import { Button, FormField } from "../components/ui";
 import { DEFAULT_ROUTE, UserRole } from "./permissions";
 import toast from "react-hot-toast";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
-  const [email, setEmail] = useState("admin@gymflow.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -68,12 +68,12 @@ const LoginPage: React.FC = () => {
                 <h1 className="font-bold text-white text-lg leading-none">
                   GymFlow
                 </h1>
-                <p className="text-xs text-slate-500 mt-0.5">Admin Portal</p>
+                <p className="text-xs text-slate-500 mt-0.5">Gym Management Platform</p>
               </div>
             </div>
             <h2 className="text-2xl font-bold text-white">Welcome back</h2>
             <p className="text-sm text-slate-400 mt-1">
-              Sign in to manage your gym
+              Sign in to your account
             </p>
           </div>
 
@@ -85,46 +85,34 @@ const LoginPage: React.FC = () => {
               </div>
             )}
 
-            <div className="space-y-1">
-              <label className="label">Email Address</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@gymflow.com"
-                  className="input-field pl-9"
-                  autoComplete="email"
-                />
-              </div>
-            </div>
+            <FormField
+              label="Email Address"
+              icon={<Mail className="w-4 h-4" />}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              autoComplete="email"
+            />
 
-            <div className="space-y-1">
-              <label className="label">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input
-                  type={showPass ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="input-field pl-9 pr-9"
-                  autoComplete="current-password"
-                />
+            <FormField
+              label="Password"
+              icon={<Lock className="w-4 h-4" />}
+              type={showPass ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="current-password"
+              rightIcon={
                 <button
                   type="button"
                   onClick={() => setShowPass((s) => !s)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                  className="text-slate-500 hover:text-slate-300"
                 >
-                  {showPass ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
+                  {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
-              </div>
-            </div>
+              }
+            />
 
             <div className="flex items-center justify-between pt-1">
               <label className="flex items-center gap-2 cursor-pointer">
@@ -151,7 +139,13 @@ const LoginPage: React.FC = () => {
           </form>
         </div>
 
-        <p className="text-center text-xs text-slate-600 mt-4">
+        <p className="text-center text-xs text-slate-500 mt-4">
+          New gym?{' '}
+          <Link to="/register" className="text-brand-400 hover:text-brand-300 transition-colors font-medium">
+            Register your gym
+          </Link>
+        </p>
+        <p className="text-center text-xs text-slate-600 mt-1">
           © 2026 GymFlow. All rights reserved.
         </p>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDebounce } from "../../../hooks/useDebounce";
 import {
   UserPlus,
   Edit,
@@ -278,11 +279,13 @@ const MembersPage: React.FC = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [viewMember, setViewMember] = useState<Member | null>(null);
 
+  const debouncedSearch = useDebounce(search);
+
   const load = async () => {
     setLoading(true);
     try {
       const [m, p] = await Promise.all([
-        membersApi.getAll({ search, status: statusFilter || undefined }),
+        membersApi.getAll({ search: debouncedSearch, status: statusFilter || undefined }),
         plansApi.getAll(),
       ]);
       setMembers(m.data);
@@ -294,7 +297,7 @@ const MembersPage: React.FC = () => {
 
   useEffect(() => {
     load();
-  }, [search, statusFilter]);
+  }, [debouncedSearch, statusFilter]);
 
   const handleDelete = async () => {
     if (!deleteId) return;

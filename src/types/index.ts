@@ -14,7 +14,7 @@ export interface AdminUser {
   id: string;
   name: string;
   email: string;
-  role: 'SuperAdmin' | 'Admin' | 'Staff';
+  role: 'SuperAdmin' | 'GymAdmin' | 'Staff';
   gymId: string;
   gymName: string;
   avatar?: string;

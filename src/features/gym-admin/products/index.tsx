@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDebounce } from '../../../hooks/useDebounce';
 import { ShoppingBag, Star, Plus, Edit, Trash2, Eye, TrendingUp, Package } from 'lucide-react';
 import { Badge, SearchInput, StatCard, Spinner, EmptyState, Modal, Button, Input, Select, Textarea, ConfirmDialog } from '../../../components/ui';
 import { productsApi } from '../../../api/endpoints';
@@ -186,11 +187,13 @@ const ProductsPage: React.FC = () => {
   const [viewProduct, setViewProduct] = useState<Product | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
+  const debouncedSearch = useDebounce(search);
+
   const load = () => {
     setLoading(true);
-    productsApi.getAll({ search }).then(r => { setProducts(r.data as Product[]); setLoading(false); });
+    productsApi.getAll({ search: debouncedSearch }).then(r => { setProducts(r.data as Product[]); setLoading(false); });
   };
-  useEffect(() => { load(); }, [search, catFilter]);
+  useEffect(() => { load(); }, [debouncedSearch, catFilter]);
 
   const handleDelete = () => {
     const idx = mockProducts.findIndex(p => p.id === deleteId);

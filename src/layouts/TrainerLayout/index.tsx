@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { Dumbbell, LogOut } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
+import { ConfirmDialog } from '../../components/ui';
 import toast from 'react-hot-toast';
 
 const navItems = [
@@ -17,6 +18,7 @@ const navItems = [
 const TrainerLayout: React.FC = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -55,7 +57,7 @@ const TrainerLayout: React.FC = () => {
             <p className="text-xs text-slate-500 truncate">{user?.email}</p>
           </div>
           <button
-            onClick={handleLogout}
+            onClick={() => setShowConfirm(true)}
             className="sidebar-item w-full hover:bg-red-600/15 hover:text-red-400"
           >
             <LogOut className="w-4 h-4 flex-shrink-0" />
@@ -63,6 +65,15 @@ const TrainerLayout: React.FC = () => {
           </button>
         </div>
       </aside>
+
+      <ConfirmDialog
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={handleLogout}
+        title="Confirm Logout"
+        message="Are you sure you want to log out?"
+        confirmLabel="Logout"
+      />
 
       <div className="ml-60 flex-1 flex flex-col">
         <main className="flex-1 p-6 animate-fade-in">
