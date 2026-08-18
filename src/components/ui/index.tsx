@@ -1,5 +1,9 @@
 import React from 'react';
 import { X, Loader2 } from 'lucide-react';
+import { DatePicker as AntDatePicker, Input as AntInput, Select as AntSelect } from 'antd';
+import type { DatePickerProps as AntDatePickerProps, InputProps as AntInputProps, SelectProps as AntSelectProps } from 'antd';
+import dayjs from 'dayjs';
+import type { Dayjs } from 'dayjs';
 
 // ─── Button ──────────────────────────────────────────────────────────────────
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -85,7 +89,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
 };
 
 // ─── Input ───────────────────────────────────────────────────────────────────
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<AntInputProps, 'prefix' | 'size'> {
   label?: string;
   error?: string;
   leftIcon?: React.ReactNode;
@@ -94,32 +98,60 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export const Input: React.FC<InputProps> = ({ label, error, leftIcon, className = '', ...rest }) => (
   <div className="flex flex-col gap-1">
     {label && <label className="label">{label}</label>}
-    <div className="relative">
-      {leftIcon && (
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">{leftIcon}</div>
-      )}
-      <input
-        className={`input-field ${leftIcon ? 'pl-9' : ''} ${error ? 'border-red-500 focus:border-red-500' : ''} ${className}`}
-        {...rest}
-      />
-    </div>
+    <AntInput
+      className={`gym-ant-input ${className}`}
+      prefix={leftIcon ? <span className="text-slate-500">{leftIcon}</span> : undefined}
+      status={error ? 'error' : undefined}
+      {...rest}
+    />
     {error && <p className="text-xs text-red-400">{error}</p>}
   </div>
 );
 
 // ─── Select ──────────────────────────────────────────────────────────────────
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends Omit<AntSelectProps<string>, 'options' | 'onChange' | 'className' | 'size' | 'status'> {
   label?: string;
   error?: string;
-  options: { value: string; label: string }[];
+  options: { value: string; label: React.ReactNode }[];
+  className?: string;
+  onChange?: (value: string) => void;
 }
 
-export const Select: React.FC<SelectProps> = ({ label, error, options, className = '', ...rest }) => (
+export const Select: React.FC<SelectProps> = ({ label, error, options, className = '', onChange, ...rest }) => (
   <div className="flex flex-col gap-1">
     {label && <label className="label">{label}</label>}
-    <select className={`input-field ${error ? 'border-red-500' : ''} ${className}`} {...rest}>
-      {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-    </select>
+    <AntSelect
+      className={`gym-ant-select ${className}`}
+      popupClassName="gym-ant-select-dropdown"
+      options={options}
+      onChange={onChange}
+      status={error ? 'error' : undefined}
+      {...rest}
+    />
+    {error && <p className="text-xs text-red-400">{error}</p>}
+  </div>
+);
+
+// ─── Date Picker ─────────────────────────────────────────────────────────────
+interface DatePickerProps extends Omit<AntDatePickerProps, 'value' | 'onChange' | 'className' | 'size' | 'status'> {
+  label?: string;
+  error?: string;
+  value?: string;
+  className?: string;
+  onChange?: (value: string) => void;
+}
+
+export const DatePicker: React.FC<DatePickerProps> = ({ label, error, value, className = '', onChange, ...rest }) => (
+  <div className="flex flex-col gap-1">
+    {label && <label className="label">{label}</label>}
+    <AntDatePicker
+      className={`gym-ant-picker ${className}`}
+      value={value ? dayjs(value) : null}
+      onChange={(date) => onChange?.(date ? (date as Dayjs).format('YYYY-MM-DD') : '')}
+      format="DD MMM YYYY"
+      status={error ? 'error' : undefined}
+      {...rest}
+    />
     {error && <p className="text-xs text-red-400">{error}</p>}
   </div>
 );
@@ -220,6 +252,37 @@ export const SearchInput: React.FC<SearchInputProps> = ({ value, onChange, place
       placeholder={placeholder}
       className="input-field pl-9"
     />
+  </div>
+);
+
+// ─── Form Field ──────────────────────────────────────────────────────────────
+interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
+  icon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  error?: string;
+}
+
+export const FormField: React.FC<FormFieldProps> = ({
+  label, icon, rightIcon, error, className = '', ...rest
+}) => (
+  <div className="space-y-1">
+    <label className="label">{label}</label>
+    <div className="relative">
+      {icon && (
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+          {icon}
+        </span>
+      )}
+      <input
+        className={`input-field w-full ${icon ? 'pl-9' : ''} ${rightIcon ? 'pr-9' : ''} ${error ? 'border-red-500' : ''} ${className}`}
+        {...rest}
+      />
+      {rightIcon && (
+        <span className="absolute right-3 top-1/2 -translate-y-1/2">{rightIcon}</span>
+      )}
+    </div>
+    {error && <p className="text-xs text-red-400">{error}</p>}
   </div>
 );
 

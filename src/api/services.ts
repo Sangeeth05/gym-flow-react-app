@@ -35,7 +35,7 @@ export const authApi = {
             id: "1",
             name: "Admin User",
             email: data.email,
-            role: "Admin",
+            role: "GymAdmin",
             gymId: "GYM-001",
             gymName: "GymFlow Fitness Center",
           },
