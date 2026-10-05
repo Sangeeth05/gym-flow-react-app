@@ -5,7 +5,6 @@ import {
   InventoryItem,
   Product,
   PromoCode,
-  Staff,
   MembershipPlan,
   DashboardStats,
   RecentActivity,
@@ -32,7 +31,7 @@ import { getTransactions, getFinanceSummary } from '../generated/finance/finance
 import { getAllInventory } from '../generated/inventory/inventory';
 import { getAllProducts } from '../generated/products/products';
 import { getAllPromoCodes } from '../generated/promo-codes/promo-codes';
-import { getAllStaff } from '../generated/staff/staff';
+// Staff no longer has a mock path — it uses the generated hooks directly in the feature page.
 
 const USE_MOCK = process.env.REACT_APP_USE_MOCK !== 'false';
 const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms));
@@ -233,17 +232,6 @@ export const promoApi = {
       return mock.mockPromoCodes;
     }
     return cast<PromoCode[]>(getAllPromoCodes());
-  },
-};
-
-// ─── Staff ───────────────────────────────────────────────────────────────────
-export const staffApi = {
-  getAll: async (): Promise<Staff[]> => {
-    if (USE_MOCK) {
-      await delay(400);
-      return mock.mockStaff;
-    }
-    return cast<Staff[]>(getAllStaff());
   },
 };
 

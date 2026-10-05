@@ -149,9 +149,9 @@ const SuperAdminDashboard: React.FC = () => {
                   <stop offset="95%" stopColor="#a855f7" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#22222f" />
-              <XAxis dataKey="month" stroke="#5a5a78" tick={{ fontSize: 11, fill: '#5a5a78' }} axisLine={false} tickLine={false} />
-              <YAxis stroke="#5a5a78" tick={{ fontSize: 10, fill: '#5a5a78' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-bg-500)" />
+              <XAxis dataKey="month" stroke="var(--color-text-muted)" tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+              <YAxis stroke="var(--color-text-muted)" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
               <Tooltip content={<CustomTooltip />} />
               <Area type="monotone" dataKey="revenue" name="Revenue" stroke="#a855f7" strokeWidth={2} fill="url(#superRevGrad)" dot={false} activeDot={{ r: 4, fill: '#a855f7' }} />
             </AreaChart>
@@ -165,9 +165,9 @@ const SuperAdminDashboard: React.FC = () => {
           </div>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={gymGrowthData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#22222f" />
-              <XAxis dataKey="month" stroke="#5a5a78" tick={{ fontSize: 11, fill: '#5a5a78' }} axisLine={false} tickLine={false} />
-              <YAxis stroke="#5a5a78" tick={{ fontSize: 10, fill: '#5a5a78' }} axisLine={false} tickLine={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-bg-500)" />
+              <XAxis dataKey="month" stroke="var(--color-text-muted)" tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+              <YAxis stroke="var(--color-text-muted)" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="gyms" name="Gyms" fill="#a855f7" radius={[4, 4, 0, 0]} />
             </BarChart>

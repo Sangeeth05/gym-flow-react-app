@@ -6,15 +6,20 @@
  */
 
 export * from './createMemberDto';
+export * from './createStaffRequest';
 export * from './getAllInventoryParams';
 export * from './getAllMembersParams';
 export * from './getAllProductsParams';
-export * from './getAllStaffParams';
 export * from './getExpiringMembersParams';
 export * from './getGymsParams';
+export * from './getStaffListParams';
 export * from './getTransactionsParams';
 export * from './gymSignupRequest';
 export * from './loginRequest';
+export * from './problemDetails';
 export * from './refreshTokenRequest';
+export * from './staffDto';
+export * from './staffDtoPaginatedResponse';
 export * from './updateMemberDto';
+export * from './updateStaffRequest';
 export * from './validatePromoDto';

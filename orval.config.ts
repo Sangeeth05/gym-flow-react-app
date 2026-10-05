@@ -14,6 +14,7 @@ export default defineConfig({
       schemas: "src/api/generated/models",
       client: "react-query", // generates TanStack Query hooks
       httpClient: "axios",
+      clean: true, // remove stale generated files on each regeneration
       override: {
         mutator: {
           // Points generated calls through YOUR existing axios instance,

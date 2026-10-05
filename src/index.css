@@ -17,6 +17,10 @@
   --color-bg-600: #22222f;
   --color-bg-500: #2d2d3d;
   --color-bg-400: #3d3d52;
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
 }
 
 @layer base {
@@ -26,7 +30,7 @@
     margin: 0;
     -webkit-font-smoothing: antialiased;
     background-color: var(--color-bg-900);
-    color: #fff;
+    color: var(--color-text-primary);
   }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: var(--color-bg-800); }
@@ -52,14 +56,16 @@
   .btn-secondary {
     background-color: var(--color-bg-600);
     border: 1px solid var(--color-bg-400);
-    @apply text-white px-4 py-2 rounded-lg transition-all duration-150 active:scale-95 text-sm inline-flex items-center justify-center gap-2;
+    color: var(--color-text-primary);
+    @apply px-4 py-2 rounded-lg transition-all duration-150 active:scale-95 text-sm inline-flex items-center justify-center gap-2;
   }
   .btn-secondary:hover { background-color: var(--color-bg-500); }
 
   .btn-ghost {
-    @apply text-slate-300 hover:text-white px-3 py-1.5 rounded-lg transition-all duration-150 text-sm inline-flex items-center gap-2;
+    @apply px-3 py-1.5 rounded-lg transition-all duration-150 text-sm inline-flex items-center gap-2;
+    color: var(--color-text-secondary);
   }
-  .btn-ghost:hover { background-color: var(--color-bg-700); }
+  .btn-ghost:hover { background-color: var(--color-bg-700); color: var(--color-text-primary); }
 
   .btn-danger {
     @apply bg-red-600/20 hover:bg-red-600/40 text-red-400 hover:text-red-300 px-4 py-2 rounded-lg transition-all duration-150 active:scale-95 text-sm border border-red-600/30 inline-flex items-center justify-center gap-2;
@@ -68,7 +74,8 @@
   .input-field {
     background-color: var(--color-bg-700);
     border: 1px solid var(--color-bg-500);
-    @apply text-white placeholder-slate-500 rounded-lg px-3 py-2 text-sm focus:outline-none transition-all duration-150 w-full;
+    color: var(--color-text-primary);
+    @apply placeholder-slate-500 rounded-lg px-3 py-2 text-sm focus:outline-none transition-all duration-150 w-full;
   }
   .input-field:focus {
     border-color: var(--color-brand-500);
@@ -81,7 +88,7 @@
   .gym-ant-select .ant-select-selector {
     background-color: var(--color-bg-700) !important;
     border: 1px solid var(--color-bg-500) !important;
-    color: #fff !important;
+    color: var(--color-text-primary) !important;
     border-radius: 0.5rem !important;
     min-height: 38px;
     width: 100%;
@@ -115,7 +122,7 @@
   .gym-ant-picker input,
   .gym-ant-select .ant-select-selection-item,
   .gym-ant-select .ant-select-selection-placeholder {
-    color: #fff !important;
+    color: var(--color-text-primary) !important;
     font-size: 0.875rem;
   }
 
@@ -123,7 +130,7 @@
   .gym-ant-input.ant-input::placeholder,
   .gym-ant-picker input::placeholder,
   .gym-ant-select .ant-select-selection-placeholder {
-    color: rgb(100 116 139) !important;
+    color: var(--color-text-muted) !important;
   }
 
   .gym-ant-picker,
@@ -148,7 +155,7 @@
   }
 
   .gym-ant-select-dropdown .ant-select-item {
-    color: rgb(203 213 225);
+    color: var(--color-text-secondary);
     border-radius: 0.5rem;
   }
 
@@ -160,15 +167,15 @@
 
   .ant-picker-dropdown .ant-picker-header,
   .ant-picker-dropdown .ant-picker-content th {
-    color: rgb(203 213 225) !important;
+    color: var(--color-text-secondary) !important;
   }
 
   .ant-picker-dropdown .ant-picker-cell {
-    color: rgb(100 116 139) !important;
+    color: var(--color-text-muted) !important;
   }
 
   .ant-picker-dropdown .ant-picker-cell-in-view {
-    color: rgb(226 232 240) !important;
+    color: var(--color-text-primary) !important;
   }
 
   .ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
@@ -186,7 +193,7 @@
     background-color: var(--color-bg-600) !important;
   }
 
-  .label { @apply text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5 block; }
+  .label { @apply text-xs font-semibold uppercase tracking-wider mb-1.5 block; color: var(--color-text-secondary); }
 
   .badge { @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-semibold; }
   .badge-green  { @apply badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/20; }
@@ -197,18 +204,18 @@
   .badge-purple { @apply badge bg-purple-500/15 text-purple-400 border border-purple-500/20; }
 
   .stat-card { @apply card p-5 flex flex-col gap-3; }
-  .page-title { @apply font-bold text-2xl text-white; }
-  .page-subtitle { @apply text-sm text-slate-400 mt-0.5; }
+  .page-title { @apply font-bold text-2xl; color: var(--color-text-primary); }
+  .page-subtitle { @apply text-sm mt-0.5; color: var(--color-text-secondary); }
   .divider { border-top: 1px solid var(--color-bg-600); }
 
   .table-wrapper { @apply card overflow-hidden; }
   table.data-table { @apply w-full; }
   table.data-table thead tr { border-bottom: 1px solid var(--color-bg-600); }
-  table.data-table thead th { @apply px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider; }
+  table.data-table thead th { @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider; color: var(--color-text-secondary); }
   table.data-table tbody tr { border-bottom: 1px solid var(--color-bg-700); transition: background 0.1s; }
   table.data-table tbody tr:last-child { border-bottom: none; }
   table.data-table tbody tr:hover { background-color: color-mix(in srgb, var(--color-bg-700) 50%, transparent); }
-  table.data-table tbody td { @apply px-4 py-3 text-sm text-slate-300; }
+  table.data-table tbody td { @apply px-4 py-3 text-sm; color: var(--color-text-secondary); }
 
   .modal-overlay { @apply fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4; }
   .modal-box {
@@ -223,10 +230,10 @@
   .modal-footer { @apply flex items-center justify-end gap-3 p-5; border-top: 1px solid var(--color-bg-600); }
 
   .sidebar-item {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400
-           hover:text-white transition-all duration-150 cursor-pointer;
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 cursor-pointer;
+    color: var(--color-text-secondary);
   }
-  .sidebar-item:hover { background-color: color-mix(in srgb, var(--color-bg-600) 80%, transparent); }
+  .sidebar-item:hover { background-color: color-mix(in srgb, var(--color-bg-600) 80%, transparent); color: var(--color-text-primary); }
   .sidebar-item.active {
     color: var(--color-brand-400);
     background-color: color-mix(in srgb, var(--color-brand-500) 15%, transparent);
@@ -254,3 +261,33 @@
 .animate-fade-in      { animation: fadeIn 0.3s ease-out; }
 .animate-slide-up     { animation: slideUp 0.4s ease-out; }
 .animate-slide-in-right { animation: slideInRight 0.3s ease-out; }
+
+/* ── Light theme text overrides ─────────────────────────────────────────── */
+/* Recolour Tailwind hard-coded text-white / text-slate-* in content areas  */
+[data-theme="light"] .text-white {
+  color: var(--color-text-primary) !important;
+}
+[data-theme="light"] .text-slate-50,
+[data-theme="light"] .text-slate-100,
+[data-theme="light"] .text-slate-200,
+[data-theme="light"] .text-slate-300 {
+  color: var(--color-text-primary) !important;
+}
+[data-theme="light"] .text-slate-400,
+[data-theme="light"] .text-slate-500 {
+  color: var(--color-text-secondary) !important;
+}
+[data-theme="light"] .text-slate-600 {
+  color: var(--color-text-muted) !important;
+}
+/* Restore white text on always-coloured backgrounds.
+   Note: selectors WITHOUT space target the same element; WITH space target descendants. */
+/* Avatar initials / text inside gradient wrappers */
+[data-theme="light"] [class*="from-brand"] .text-white,
+[data-theme="light"] .bg-gradient-to-br .text-white {
+  color: #ffffff !important;
+}
+/* Primary buttons that carry both bg-brand-* and text-white on the same element */
+[data-theme="light"] [class*="bg-brand"].text-white {
+  color: #ffffff !important;
+}

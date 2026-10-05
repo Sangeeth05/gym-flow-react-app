@@ -195,26 +195,6 @@ export interface PromoCode {
   createdAt: string;
 }
 
-// ─── Staff ──────────────────────────────────────────────────────────────────
-export type StaffRole = 'Trainer' | 'Receptionist' | 'Manager' | 'Cleaner' | 'Security';
-
-export interface Staff {
-  id: string;
-  staffId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  role: StaffRole;
-  salary: number;
-  joinDate: string;
-  status: 'Active' | 'Inactive';
-  specializations?: string[];
-  schedule?: string;
-  profilePhoto?: string;
-  createdAt: string;
-}
-
 // ─── Dashboard ──────────────────────────────────────────────────────────────
 export interface DashboardStats {
   totalMembers: number;

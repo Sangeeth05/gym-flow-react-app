@@ -99,9 +99,9 @@ const ReportsPage: React.FC = () => {
         </div>
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={revenueData} barGap={4}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#22222f" />
-            <XAxis dataKey="month" stroke="#5a5a78" tick={{ fontSize: 11, fill: '#5a5a78' }} axisLine={false} tickLine={false} />
-            <YAxis stroke="#5a5a78" tick={{ fontSize: 10, fill: '#5a5a78' }} axisLine={false} tickLine={false}
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-bg-500)" />
+            <XAxis dataKey="month" stroke="var(--color-text-muted)" tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+            <YAxis stroke="var(--color-text-muted)" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false}
               tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`} />
             <Tooltip content={<CustomTooltip />} />
             <Bar dataKey="revenue" name="Revenue" fill="#f97316" radius={[4, 4, 0, 0]} />
@@ -116,11 +116,11 @@ const ReportsPage: React.FC = () => {
           <p className="text-xs text-slate-500 mb-4">New vs churned members per month</p>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={memberGrowth}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#22222f" />
-              <XAxis dataKey="month" stroke="#5a5a78" tick={{ fontSize: 11, fill: '#5a5a78' }} axisLine={false} tickLine={false} />
-              <YAxis stroke="#5a5a78" tick={{ fontSize: 10, fill: '#5a5a78' }} axisLine={false} tickLine={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-bg-500)" />
+              <XAxis dataKey="month" stroke="var(--color-text-muted)" tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+              <YAxis stroke="var(--color-text-muted)" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
               <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ fontSize: 11, color: '#9ca3af' }} />
+              <Legend wrapperStyle={{ fontSize: 11, color: 'var(--color-text-secondary)' }} />
               <Line type="monotone" dataKey="new" name="New" stroke="#22c55e" strokeWidth={2} dot={{ r: 3, fill: '#22c55e' }} />
               <Line type="monotone" dataKey="churned" name="Churned" stroke="#ef4444" strokeWidth={2} dot={{ r: 3, fill: '#ef4444' }} />
               <Line type="monotone" dataKey="net" name="Net" stroke="#f97316" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 3, fill: '#f97316' }} />
@@ -138,7 +138,7 @@ const ReportsPage: React.FC = () => {
                   innerRadius={45} outerRadius={70} paddingAngle={3}>
                   {planDist.map((_, i) => <Cell key={i} fill={COLORS[i]} />)}
                 </Pie>
-                <Tooltip contentStyle={{ backgroundColor: '#1a1a24', border: '1px solid #2d2d3d', borderRadius: 8, fontSize: 12 }} />
+                <Tooltip contentStyle={{ backgroundColor: 'var(--color-bg-800)', border: '1px solid var(--color-bg-500)', borderRadius: 8, fontSize: 12, color: 'var(--color-text-primary)' }} />
               </PieChart>
             </ResponsiveContainer>
             <div className="flex-1 space-y-2">
@@ -169,9 +169,9 @@ const ReportsPage: React.FC = () => {
         <p className="text-xs text-slate-500 mb-4">Average daily check-ins by hour</p>
         <ResponsiveContainer width="100%" height={180}>
           <BarChart data={peakHours} barSize={18}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#22222f" vertical={false} />
-            <XAxis dataKey="hour" stroke="#5a5a78" tick={{ fontSize: 10, fill: '#5a5a78' }} axisLine={false} tickLine={false} />
-            <YAxis stroke="#5a5a78" tick={{ fontSize: 10, fill: '#5a5a78' }} axisLine={false} tickLine={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-bg-500)" vertical={false} />
+            <XAxis dataKey="hour" stroke="var(--color-text-muted)" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+            <YAxis stroke="var(--color-text-muted)" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
             <Tooltip content={<CustomTooltip />} />
             <Bar dataKey="visits" name="Check-ins" radius={[3, 3, 0, 0]} fill="#f97316" label={false}>
               {peakHours.map((entry, index) => (

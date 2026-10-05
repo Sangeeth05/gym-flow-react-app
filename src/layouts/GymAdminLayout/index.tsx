@@ -9,24 +9,35 @@ const GymAdminLayout: React.FC = () => {
   const { user } = useAuthStore();
 
   return (
-    <div className="min-h-screen bg-dark-900 flex">
+    <div className="min-h-screen flex" style={{ backgroundColor: 'var(--color-bg-900)' }}>
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} />
 
       <div className={`flex-1 flex flex-col transition-all duration-300 ${collapsed ? 'ml-16' : 'ml-60'}`}>
         {/* Top bar */}
-        <header className="sticky top-0 z-30 bg-dark-900/90 backdrop-blur-sm border-b border-dark-700 px-6 py-3 flex items-center justify-between">
+        <header
+          className="sticky top-0 z-30 backdrop-blur-sm border-b px-6 py-3 flex items-center justify-between"
+          style={{ backgroundColor: 'var(--color-bg-900)', borderColor: 'var(--color-bg-600)' }}
+        >
           <div className="flex items-center gap-3">
             <div className="relative hidden sm:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: 'var(--color-text-muted)' }} />
               <input
                 type="text"
                 placeholder="Quick search..."
-                className="bg-dark-700 border border-dark-500 text-white placeholder-slate-600 rounded-lg pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:border-brand-500 w-56"
+                className="rounded-lg pl-8 pr-3 py-1.5 text-sm focus:outline-none w-56 border transition-colors focus:border-brand-500"
+                style={{
+                  backgroundColor: 'var(--color-bg-700)',
+                  borderColor: 'var(--color-bg-500)',
+                  color: 'var(--color-text-primary)',
+                }}
               />
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative p-2 rounded-lg hover:bg-dark-700 text-slate-400 hover:text-white transition-colors">
+            <button
+              className="relative p-2 rounded-lg transition-colors hover:bg-[var(--color-bg-700)]"
+              style={{ color: 'var(--color-text-secondary)' }}
+            >
               <Bell className="w-4 h-4" />
               <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-brand-500 rounded-full" />
             </button>
@@ -37,8 +48,8 @@ const GymAdminLayout: React.FC = () => {
                 </span>
               </div>
               <div className="hidden sm:block">
-                <p className="text-xs font-semibold text-white leading-none">{user?.name}</p>
-                <p className="text-xs text-slate-500">{user?.role}</p>
+                <p className="text-xs font-semibold leading-none" style={{ color: 'var(--color-text-primary)' }}>{user?.name}</p>
+                <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{user?.role}</p>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, Loader2 } from 'lucide-react';
 import { DatePicker as AntDatePicker, Input as AntInput, Select as AntSelect } from 'antd';
-import type { DatePickerProps as AntDatePickerProps, InputProps as AntInputProps, SelectProps as AntSelectProps } from 'antd';
+import type { DatePickerProps as AntDatePickerProps, InputProps as AntInputProps, InputRef, SelectProps as AntSelectProps } from 'antd';
 import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 
@@ -19,14 +19,20 @@ export const Button: React.FC<ButtonProps> = ({
   const base = 'inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100';
   const variants = {
     primary: 'bg-brand-500 hover:bg-brand-600 text-white',
-    secondary: 'bg-dark-600 hover:bg-dark-500 text-white border border-dark-400',
-    ghost: 'hover:bg-dark-700 text-slate-300 hover:text-white',
+    secondary: 'bg-[var(--color-bg-600)] hover:bg-[var(--color-bg-500)] border border-[var(--color-bg-400)]',
+    ghost: 'hover:bg-[var(--color-bg-700)]',
     danger: 'bg-red-600/20 hover:bg-red-600/40 text-red-400 hover:text-red-300 border border-red-600/30',
+  };
+  const variantStyles: Record<string, React.CSSProperties> = {
+    secondary: { color: 'var(--color-text-primary)' },
+    ghost: { color: 'var(--color-text-secondary)' },
+    primary: {},
+    danger: {},
   };
   const sizes = { sm: 'px-3 py-1.5 text-xs', md: 'px-4 py-2 text-sm', lg: 'px-5 py-2.5 text-base' };
 
   return (
-    <button className={`${base} ${variants[variant]} ${sizes[size]} ${className}`} disabled={disabled || loading} {...rest}>
+    <button className={`${base} ${variants[variant]} ${sizes[size]} ${className}`} style={variantStyles[variant]} disabled={disabled || loading} {...rest}>
       {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : leftIcon}
       {children}
     </button>
@@ -76,7 +82,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
     <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className={`modal-box ${modalSizes[size]} animate-slide-up`} style={{ maxHeight: '90vh', overflowY: 'auto' }}>
         <div className="modal-header">
-          <h3 className="font-bold text-white text-base">{title}</h3>
+          <h3 className="font-bold text-base" style={{ color: 'var(--color-text-primary)' }}>{title}</h3>
           <button onClick={onClose} className="btn-ghost p-1.5 rounded-lg">
             <X className="w-4 h-4" />
           </button>
@@ -95,18 +101,26 @@ interface InputProps extends Omit<AntInputProps, 'prefix' | 'size'> {
   leftIcon?: React.ReactNode;
 }
 
-export const Input: React.FC<InputProps> = ({ label, error, leftIcon, className = '', ...rest }) => (
-  <div className="flex flex-col gap-1">
-    {label && <label className="label">{label}</label>}
-    <AntInput
-      className={`gym-ant-input ${className}`}
-      prefix={leftIcon ? <span className="text-slate-500">{leftIcon}</span> : undefined}
-      status={error ? 'error' : undefined}
-      {...rest}
-    />
-    {error && <p className="text-xs text-red-400">{error}</p>}
-  </div>
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ label, error, leftIcon, className = '', ...rest }, ref) => {
+    const antRef = React.useRef<InputRef>(null);
+    React.useImperativeHandle(ref, () => antRef.current?.input as HTMLInputElement);
+    return (
+      <div className="flex flex-col gap-1">
+        {label && <label className="label">{label}</label>}
+        <AntInput
+          ref={antRef}
+          className={`gym-ant-input ${className}`}
+          prefix={leftIcon ? <span className="text-slate-500">{leftIcon}</span> : undefined}
+          status={error ? 'error' : undefined}
+          {...rest}
+        />
+        {error && <p className="text-xs text-red-400">{error}</p>}
+      </div>
+    );
+  }
 );
+Input.displayName = 'Input';
 
 // ─── Select ──────────────────────────────────────────────────────────────────
 interface SelectProps extends Omit<AntSelectProps<string>, 'options' | 'onChange' | 'className' | 'size' | 'status'> {
@@ -208,9 +222,9 @@ export const StatCard: React.FC<StatCardProps> = ({ title, value, change, icon, 
       )}
     </div>
     <div>
-      <p className="text-2xl font-bold text-white">{value}</p>
-      <p className="text-xs font-semibold text-slate-400 mt-0.5">{title}</p>
-      {subtext && <p className="text-xs text-slate-500 mt-0.5">{subtext}</p>}
+      <p className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>{value}</p>
+      <p className="text-xs font-semibold mt-0.5" style={{ color: 'var(--color-text-secondary)' }}>{title}</p>
+      {subtext && <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{subtext}</p>}
     </div>
   </div>
 );
@@ -225,9 +239,9 @@ interface EmptyStateProps {
 
 export const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description, action }) => (
   <div className="flex flex-col items-center justify-center py-16 text-center">
-    <div className="text-slate-600 mb-4 opacity-60">{icon}</div>
-    <h3 className="font-bold text-slate-300 text-base mb-1">{title}</h3>
-    <p className="text-sm text-slate-500 max-w-xs mb-4">{description}</p>
+    <div className="mb-4 opacity-60" style={{ color: 'var(--color-text-muted)' }}>{icon}</div>
+    <h3 className="font-bold text-base mb-1" style={{ color: 'var(--color-text-secondary)' }}>{title}</h3>
+    <p className="text-sm max-w-xs mb-4" style={{ color: 'var(--color-text-muted)' }}>{description}</p>
     {action}
   </div>
 );

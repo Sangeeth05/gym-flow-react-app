@@ -67,8 +67,8 @@ const Dashboard: React.FC = () => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload) return null;
     return (
-      <div className="bg-dark-700 border border-dark-500 rounded-lg p-3 text-xs shadow-xl">
-        <p className="font-semibold text-white mb-2">{label}</p>
+      <div className="rounded-lg p-3 text-xs shadow-xl" style={{ backgroundColor: 'var(--color-bg-700)', border: '1px solid var(--color-bg-500)', color: 'var(--color-text-primary)' }}>
+        <p className="font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>{label}</p>
         {payload.map((p: any, i: number) => (
           <p key={i} style={{ color: p.color }}>
             {p.name}: {formatCurrency(p.value)}
@@ -183,17 +183,17 @@ const Dashboard: React.FC = () => {
                   <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#22222f" />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-bg-500)" />
               <XAxis
                 dataKey="month"
-                stroke="#5a5a78"
-                tick={{ fontSize: 11, fill: "#5a5a78" }}
+                stroke="var(--color-text-muted)"
+                tick={{ fontSize: 11, fill: "var(--color-text-muted)" }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                stroke="#5a5a78"
-                tick={{ fontSize: 10, fill: "#5a5a78" }}
+                stroke="var(--color-text-muted)"
+                tick={{ fontSize: 10, fill: "var(--color-text-muted)" }}
                 axisLine={false}
                 tickLine={false}
                 tickFormatter={(v: number) => `₹${(v / 1000).toFixed(0)}k`}
@@ -254,10 +254,11 @@ const Dashboard: React.FC = () => {
               <Tooltip
                 formatter={(v: any) => formatCurrency(v)}
                 contentStyle={{
-                  backgroundColor: "#1a1a24",
-                  border: "1px solid #2d2d3d",
+                  backgroundColor: 'var(--color-bg-800)',
+                  border: '1px solid var(--color-bg-500)',
                   borderRadius: 8,
                   fontSize: 12,
+                  color: 'var(--color-text-primary)',
                 }}
               />
             </PieChart>

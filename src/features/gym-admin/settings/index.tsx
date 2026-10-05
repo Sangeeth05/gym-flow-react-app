@@ -20,9 +20,10 @@ const ACCENTS: { id: AccentColor; hex: string; label: string }[] = [
   { id: 'pink',   hex: '#ec4899', label: 'Pink'   },
 ];
 
-const VARIANTS: { id: ThemeVariant; label: string; desc: string; bg: string; border: string }[] = [
-  { id: 'dark',     label: 'Dark',     desc: 'Classic dark theme',   bg: '#111118', border: '#3d3d52' },
-  { id: 'midnight', label: 'Midnight', desc: 'Deeper black theme',   bg: '#0a0a12', border: '#2d2d50' },
+const VARIANTS: { id: ThemeVariant; label: string; desc: string; bg: string; border: string; textColor: string }[] = [
+  { id: 'dark',     label: 'Dark',     desc: 'Classic dark theme',   bg: '#111118', border: '#3d3d52', textColor: '#ffffff' },
+  { id: 'midnight', label: 'Midnight', desc: 'Deeper black theme',   bg: '#0a0a12', border: '#2d2d50', textColor: '#ffffff' },
+  { id: 'light',    label: 'Light',    desc: 'Clean light theme',    bg: '#ffffff', border: '#e2e8f0', textColor: '#0f172a' },
 ];
 
 const SIDEBAR_WIDTHS: { id: SidebarWidth; label: string; w: string }[] = [
@@ -125,7 +126,7 @@ const SettingsPage: React.FC = () => {
               <Card className="p-5">
                 <div className="flex items-center gap-3 mb-5 pb-4 border-b border-[var(--color-bg-600)]">
                   <Building className="w-5 h-5 text-[var(--color-brand-400)]" />
-                  <h3 className="font-bold text-white">Gym Information</h3>
+                  <h3 className="font-bold" style={{ color: 'var(--color-text-primary)' }}>Gym Information</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2"><Input label="Gym Name" value={gymForm.name} onChange={sg('name')} /></div>
@@ -166,7 +167,7 @@ const SettingsPage: React.FC = () => {
               <Card className="p-5">
                 <div className="flex items-center gap-3 mb-5 pb-4 border-b border-[var(--color-bg-600)]">
                   <Bell className="w-5 h-5 text-[var(--color-brand-400)]" />
-                  <h3 className="font-bold text-white">Notification Preferences</h3>
+                  <h3 className="font-bold" style={{ color: 'var(--color-text-primary)' }}>Notification Preferences</h3>
                 </div>
                 <div className="space-y-1">
                   {[
@@ -180,8 +181,8 @@ const SettingsPage: React.FC = () => {
                   ].map(({ k, l, d }) => (
                     <div key={k} className="flex items-center justify-between py-3.5 border-b border-[var(--color-bg-700)] last:border-0">
                       <div>
-                        <p className="text-sm font-semibold text-white">{l}</p>
-                        <p className="text-xs text-slate-500 mt-0.5">{d}</p>
+                        <p className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>{l}</p>
+                        <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{d}</p>
                       </div>
                       <Toggle checked={(notif as any)[k]} onChange={v => setNotif(n => ({ ...n, [k]: v }))} />
                     </div>
@@ -203,18 +204,18 @@ const SettingsPage: React.FC = () => {
             <Card className="p-5">
               <div className="flex items-center gap-3 mb-5 pb-4 border-b border-[var(--color-bg-600)]">
                 <Shield className="w-5 h-5 text-[var(--color-brand-400)]" />
-                <h3 className="font-bold text-white">Security Settings</h3>
+                <h3 className="font-bold" style={{ color: 'var(--color-text-primary)' }}>Security Settings</h3>
               </div>
               <div className="space-y-5">
                 <div className="bg-[var(--color-bg-700)] rounded-xl p-4">
-                  <p className="text-xs text-slate-500 mb-0.5">Logged in as</p>
-                  <p className="font-semibold text-white">{user?.name}</p>
-                  <p className="text-sm text-slate-400">{user?.email}</p>
-                  <p className="text-xs text-slate-500 mt-1">Role: <span className="text-[var(--color-brand-400)] font-semibold">{user?.role}</span></p>
+                  <p className="text-xs mb-0.5" style={{ color: 'var(--color-text-muted)' }}>Logged in as</p>
+                  <p className="font-semibold" style={{ color: 'var(--color-text-primary)' }}>{user?.name}</p>
+                  <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{user?.email}</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>Role: <span className="text-[var(--color-brand-400)] font-semibold">{user?.role}</span></p>
                 </div>
 
                 <div className="border-t border-[var(--color-bg-600)] pt-5">
-                  <p className="font-bold text-white mb-4">Change Password</p>
+                  <p className="font-bold mb-4" style={{ color: 'var(--color-text-primary)' }}>Change Password</p>
                   <div className="space-y-3">
                     <Input label="Current Password" type="password" value={pwForm.current}
                       onChange={e => setPwForm(f => ({ ...f, current: e.target.value }))} placeholder="••••••••" />
@@ -227,11 +228,11 @@ const SettingsPage: React.FC = () => {
                 </div>
 
                 <div className="border-t border-[var(--color-bg-600)] pt-5">
-                  <p className="font-bold text-white mb-3">Active Sessions</p>
+                  <p className="font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>Active Sessions</p>
                   <div className="bg-[var(--color-bg-700)] rounded-lg p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-white">Current Session</p>
-                      <p className="text-xs text-slate-500">Chrome · Thiruvananthapuram, IN · Active now</p>
+                      <p className="text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>Current Session</p>
+                      <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Chrome · Thiruvananthapuram, IN · Active now</p>
                     </div>
                     <span className="badge-green">Current</span>
                   </div>
@@ -244,14 +245,14 @@ const SettingsPage: React.FC = () => {
             <Card className="p-5">
               <div className="flex items-center gap-3 mb-5 pb-4 border-b border-[var(--color-bg-600)]">
                 <Palette className="w-5 h-5 text-[var(--color-brand-400)]" />
-                <h3 className="font-bold text-white">Appearance</h3>
+                <h3 className="font-bold" style={{ color: 'var(--color-text-primary)' }}>Appearance</h3>
               </div>
 
               <div className="space-y-8">
                 <div>
                   <p className="label">Theme</p>
                   <p className="text-xs text-slate-500 mb-3">Changes the background darkness. Applied instantly.</p>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-3 gap-3">
                     {VARIANTS.map(v => (
                       <button key={v.id} onClick={() => handleVariantChange(v.id)}
                         className={`relative rounded-xl p-4 border-2 text-left transition-all duration-200 ${
@@ -259,8 +260,8 @@ const SettingsPage: React.FC = () => {
                             ? 'border-[var(--color-brand-500)] bg-[var(--color-brand-500)]/5'
                             : 'border-[var(--color-bg-500)] hover:border-[var(--color-bg-400)]'
                         }`}>
-                        <div className="w-full h-14 rounded-lg mb-3 overflow-hidden border border-white/10"
-                          style={{ background: v.bg }}>
+                        <div className="w-full h-14 rounded-lg mb-3 overflow-hidden"
+                          style={{ background: v.bg, border: `1px solid ${v.border}` }}>
                           <div className="flex h-full">
                             <div className="w-10 h-full flex flex-col gap-1 p-1.5" style={{ background: v.bg, borderRight: `1px solid ${v.border}` }}>
                               {[...Array(4)].map((_, i) => <div key={i} className="h-1.5 rounded-full" style={{ background: v.border, width: i === 0 ? '100%' : '70%' }} />)}
@@ -272,11 +273,11 @@ const SettingsPage: React.FC = () => {
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm font-semibold text-white">{v.label}</p>
-                            <p className="text-xs text-slate-500">{v.desc}</p>
+                            <p className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>{v.label}</p>
+                            <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{v.desc}</p>
                           </div>
                           {variant === v.id && (
-                            <div className="w-5 h-5 rounded-full bg-[var(--color-brand-500)] flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-full bg-[var(--color-brand-500)] flex items-center justify-center flex-shrink-0">
                               <Check className="w-3 h-3 text-white" />
                             </div>
                           )}
@@ -303,7 +304,8 @@ const SettingsPage: React.FC = () => {
                   </div>
                   <div className="flex gap-3 mt-3">
                     {ACCENTS.map(a => (
-                      <p key={a.id} className={`text-xs text-center w-10 transition-all ${accent === a.id ? 'text-white font-semibold' : 'text-slate-600'}`}>
+                      <p key={a.id} className="text-xs text-center w-10 transition-all font-medium"
+                        style={{ color: accent === a.id ? 'var(--color-text-primary)' : 'var(--color-text-muted)' }}>
                         {a.label}
                       </p>
                     ))}

@@ -120,9 +120,9 @@ const SuperAdminReports: React.FC = () => {
                 <stop offset="95%" stopColor="#a855f7" stopOpacity={0.02} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#22222f" />
-            <XAxis dataKey="month" stroke="#5a5a78" tick={{ fontSize: 11, fill: '#5a5a78' }} axisLine={false} tickLine={false} />
-            <YAxis stroke="#5a5a78" tick={{ fontSize: 10, fill: '#5a5a78' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-bg-500)" />
+            <XAxis dataKey="month" stroke="var(--color-text-muted)" tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+            <YAxis stroke="var(--color-text-muted)" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
             <Tooltip content={<CustomTooltip />} />
             <Area type="monotone" dataKey="revenue" name="Revenue" stroke="#a855f7" strokeWidth={2} fill="url(#rptRevGrad)" dot={false} activeDot={{ r: 4 }} />
           </AreaChart>
@@ -138,9 +138,9 @@ const SuperAdminReports: React.FC = () => {
           </div>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={memberGrowth} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#22222f" />
-              <XAxis dataKey="month" stroke="#5a5a78" tick={{ fontSize: 11, fill: '#5a5a78' }} axisLine={false} tickLine={false} />
-              <YAxis stroke="#5a5a78" tick={{ fontSize: 10, fill: '#5a5a78' }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-bg-500)" />
+              <XAxis dataKey="month" stroke="var(--color-text-muted)" tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+              <YAxis stroke="var(--color-text-muted)" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`} />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="members" name="Members" fill="#60a5fa" radius={[4, 4, 0, 0]} />
             </BarChart>
@@ -159,7 +159,7 @@ const SuperAdminReports: React.FC = () => {
                 ))}
               </Pie>
               <Tooltip
-                contentStyle={{ backgroundColor: '#1a1a24', border: '1px solid #2d2d3d', borderRadius: 8, fontSize: 12 }}
+                contentStyle={{ backgroundColor: 'var(--color-bg-800)', border: '1px solid var(--color-bg-500)', borderRadius: 8, fontSize: 12, color: 'var(--color-text-primary)' }}
               />
             </PieChart>
           </ResponsiveContainer>

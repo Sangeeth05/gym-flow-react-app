@@ -1,6 +1,6 @@
 import {
   DashboardStats, Member, Transaction, InventoryItem,
-  Product, PromoCode, MembershipPlan, Staff, RecentActivity
+  Product, PromoCode, MembershipPlan, RecentActivity
 } from '../types';
 
 export const mockDashboardStats: DashboardStats = {
@@ -246,31 +246,3 @@ export const mockPromoCodes: PromoCode[] = [
   },
 ];
 
-export const mockStaff: Staff[] = [
-  {
-    id: '1', staffId: 'STF-001', firstName: 'Suresh', lastName: 'P',
-    email: 'suresh.p@gymflow.com', phone: '+91 9876500001', role: 'Trainer',
-    salary: 35000, joinDate: '2023-01-01', status: 'Active',
-    specializations: ['Strength Training', 'HIIT', 'Nutrition'],
-    createdAt: '2023-01-01',
-  },
-  {
-    id: '2', staffId: 'STF-002', firstName: 'Meera', lastName: 'K',
-    email: 'meera.k@gymflow.com', phone: '+91 9876500002', role: 'Receptionist',
-    salary: 22000, joinDate: '2023-03-01', status: 'Active',
-    createdAt: '2023-03-01',
-  },
-  {
-    id: '3', staffId: 'STF-003', firstName: 'Binesh', lastName: 'M',
-    email: 'binesh.m@gymflow.com', phone: '+91 9876500003', role: 'Manager',
-    salary: 55000, joinDate: '2022-06-01', status: 'Active',
-    createdAt: '2022-06-01',
-  },
-  {
-    id: '4', staffId: 'STF-004', firstName: 'Lakshmi', lastName: 'S',
-    email: 'lakshmi.s@gymflow.com', phone: '+91 9876500004', role: 'Trainer',
-    salary: 32000, joinDate: '2023-06-01', status: 'Active',
-    specializations: ['Yoga', 'Zumba', 'Flexibility'],
-    createdAt: '2023-06-01',
-  },
-];

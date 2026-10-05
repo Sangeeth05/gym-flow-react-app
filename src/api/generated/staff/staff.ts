@@ -24,7 +24,12 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  GetAllStaffParams
+  CreateStaffRequest,
+  GetStaffListParams,
+  ProblemDetails,
+  StaffDto,
+  StaffDtoPaginatedResponse,
+  UpdateStaffRequest
 } from '../models';
 
 import { axiosInstance } from '../../axios-mutator';
@@ -47,13 +52,13 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export const getAllStaff = (
-    params?: GetAllStaffParams,
+export const getStaffList = (
+    params?: GetStaffListParams,
  signal?: AbortSignal
 ) => {
 
 
-      return axiosInstance<void>(
+      return axiosInstance<StaffDtoPaginatedResponse>(
       {url: `/api/Staff`, method: 'GET',
         params, signal
     },
@@ -63,66 +68,66 @@ export const getAllStaff = (
 
 
 
-export const getGetAllStaffQueryKey = (params?: GetAllStaffParams,) => {
+export const getGetStaffListQueryKey = (params?: GetStaffListParams,) => {
     return [
     `/api/Staff`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getGetAllStaffQueryOptions = <TData = Awaited<ReturnType<typeof getAllStaff>>, TError = unknown>(params?: GetAllStaffParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStaff>>, TError, TData>>, }
+export const getGetStaffListQueryOptions = <TData = Awaited<ReturnType<typeof getStaffList>>, TError = unknown>(params?: GetStaffListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffList>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetAllStaffQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetStaffListQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllStaff>>> = ({ signal }) => getAllStaff(params, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getStaffList>>> = ({ signal }) => getStaffList(params, signal);
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAllStaff>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getStaffList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetAllStaffQueryResult = NonNullable<Awaited<ReturnType<typeof getAllStaff>>>
-export type GetAllStaffQueryError = unknown
+export type GetStaffListQueryResult = NonNullable<Awaited<ReturnType<typeof getStaffList>>>
+export type GetStaffListQueryError = unknown
 
 
-export function useGetAllStaff<TData = Awaited<ReturnType<typeof getAllStaff>>, TError = unknown>(
- params: undefined |  GetAllStaffParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStaff>>, TError, TData>> & Pick<
+export function useGetStaffList<TData = Awaited<ReturnType<typeof getStaffList>>, TError = unknown>(
+ params: undefined |  GetStaffListParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffList>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllStaff>>,
+          Awaited<ReturnType<typeof getStaffList>>,
           TError,
-          Awaited<ReturnType<typeof getAllStaff>>
+          Awaited<ReturnType<typeof getStaffList>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetAllStaff<TData = Awaited<ReturnType<typeof getAllStaff>>, TError = unknown>(
- params?: GetAllStaffParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStaff>>, TError, TData>> & Pick<
+export function useGetStaffList<TData = Awaited<ReturnType<typeof getStaffList>>, TError = unknown>(
+ params?: GetStaffListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffList>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllStaff>>,
+          Awaited<ReturnType<typeof getStaffList>>,
           TError,
-          Awaited<ReturnType<typeof getAllStaff>>
+          Awaited<ReturnType<typeof getStaffList>>
         > , 'initialData'
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetAllStaff<TData = Awaited<ReturnType<typeof getAllStaff>>, TError = unknown>(
- params?: GetAllStaffParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStaff>>, TError, TData>>, }
+export function useGetStaffList<TData = Awaited<ReturnType<typeof getStaffList>>, TError = unknown>(
+ params?: GetStaffListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffList>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetAllStaff<TData = Awaited<ReturnType<typeof getAllStaff>>, TError = unknown>(
- params?: GetAllStaffParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStaff>>, TError, TData>>, }
+export function useGetStaffList<TData = Awaited<ReturnType<typeof getStaffList>>, TError = unknown>(
+ params?: GetStaffListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffList>>, TError, TData>>, }
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetAllStaffQueryOptions(params,options)
+  const queryOptions = getGetStaffListQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -135,15 +140,15 @@ export function useGetAllStaff<TData = Awaited<ReturnType<typeof getAllStaff>>, 
 
 
 export const createStaff = (
-    createStaffBody?: unknown,
+    createStaffRequest?: CreateStaffRequest,
  signal?: AbortSignal
 ) => {
 
 
-      return axiosInstance<void>(
+      return axiosInstance<StaffDto>(
       {url: `/api/Staff`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: createStaffBody, signal
+      data: createStaffRequest, signal
     },
       );
     }
@@ -151,9 +156,9 @@ export const createStaff = (
 
 
 
-export const getCreateStaffMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createStaff>>, TError,{data?: unknown}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof createStaff>>, TError,{data?: unknown}, TContext> => {
+export const getCreateStaffMutationOptions = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createStaff>>, TError,{data?: CreateStaffRequest}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createStaff>>, TError,{data?: CreateStaffRequest}, TContext> => {
 
 const mutationKey = ['createStaff'];
 const {mutation: mutationOptions} = options ?
@@ -165,7 +170,7 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createStaff>>, {data?: unknown}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createStaff>>, {data?: CreateStaffRequest}> = (props) => {
           const {data} = props ?? {};
 
           return  createStaff(data,)
@@ -179,15 +184,15 @@ const {mutation: mutationOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type CreateStaffMutationResult = NonNullable<Awaited<ReturnType<typeof createStaff>>>
-    export type CreateStaffMutationBody = unknown | undefined
-    export type CreateStaffMutationError = unknown
+    export type CreateStaffMutationBody = CreateStaffRequest | undefined
+    export type CreateStaffMutationError = ProblemDetails
 
-    export const useCreateStaff = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createStaff>>, TError,{data?: unknown}, TContext>, }
+    export const useCreateStaff = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createStaff>>, TError,{data?: CreateStaffRequest}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createStaff>>,
         TError,
-        {data?: unknown},
+        {data?: CreateStaffRequest},
         TContext
       > => {
       return useMutation(getCreateStaffMutationOptions(options), queryClient);
@@ -198,7 +203,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return axiosInstance<void>(
+      return axiosInstance<StaffDto>(
       {url: `/api/Staff/${id}`, method: 'GET', signal
     },
       );
@@ -214,7 +219,7 @@ export const getGetStaffByIdQueryKey = (id: string,) => {
     }
 
 
-export const getGetStaffByIdQueryOptions = <TData = Awaited<ReturnType<typeof getStaffById>>, TError = unknown>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffById>>, TError, TData>>, }
+export const getGetStaffByIdQueryOptions = <TData = Awaited<ReturnType<typeof getStaffById>>, TError = ProblemDetails>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffById>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -233,10 +238,10 @@ const {query: queryOptions} = options ?? {};
 }
 
 export type GetStaffByIdQueryResult = NonNullable<Awaited<ReturnType<typeof getStaffById>>>
-export type GetStaffByIdQueryError = unknown
+export type GetStaffByIdQueryError = ProblemDetails
 
 
-export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>, TError = unknown>(
+export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>, TError = ProblemDetails>(
  id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffById>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStaffById>>,
@@ -246,7 +251,7 @@ export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>, TError = unknown>(
+export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>, TError = ProblemDetails>(
  id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffById>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStaffById>>,
@@ -256,12 +261,12 @@ export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>, TError = unknown>(
+export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>, TError = ProblemDetails>(
  id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffById>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>, TError = unknown>(
+export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>, TError = ProblemDetails>(
  id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStaffById>>, TError, TData>>, }
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -280,15 +285,15 @@ export function useGetStaffById<TData = Awaited<ReturnType<typeof getStaffById>>
 
 export const updateStaff = (
     id: string,
-    updateStaffBody?: unknown,
+    updateStaffRequest?: UpdateStaffRequest,
  signal?: AbortSignal
 ) => {
 
 
-      return axiosInstance<void>(
+      return axiosInstance<StaffDto>(
       {url: `/api/Staff/${id}`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
-      data: updateStaffBody, signal
+      data: updateStaffRequest, signal
     },
       );
     }
@@ -296,9 +301,9 @@ export const updateStaff = (
 
 
 
-export const getUpdateStaffMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateStaff>>, TError,{id: string;data?: unknown}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof updateStaff>>, TError,{id: string;data?: unknown}, TContext> => {
+export const getUpdateStaffMutationOptions = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateStaff>>, TError,{id: string;data?: UpdateStaffRequest}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof updateStaff>>, TError,{id: string;data?: UpdateStaffRequest}, TContext> => {
 
 const mutationKey = ['updateStaff'];
 const {mutation: mutationOptions} = options ?
@@ -310,7 +315,7 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateStaff>>, {id: string;data?: unknown}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateStaff>>, {id: string;data?: UpdateStaffRequest}> = (props) => {
           const {id,data} = props ?? {};
 
           return  updateStaff(id,data,)
@@ -324,15 +329,15 @@ const {mutation: mutationOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateStaffMutationResult = NonNullable<Awaited<ReturnType<typeof updateStaff>>>
-    export type UpdateStaffMutationBody = unknown | undefined
-    export type UpdateStaffMutationError = unknown
+    export type UpdateStaffMutationBody = UpdateStaffRequest | undefined
+    export type UpdateStaffMutationError = ProblemDetails
 
-    export const useUpdateStaff = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateStaff>>, TError,{id: string;data?: unknown}, TContext>, }
+    export const useUpdateStaff = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateStaff>>, TError,{id: string;data?: UpdateStaffRequest}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateStaff>>,
         TError,
-        {id: string;data?: unknown},
+        {id: string;data?: UpdateStaffRequest},
         TContext
       > => {
       return useMutation(getUpdateStaffMutationOptions(options), queryClient);
@@ -352,7 +357,7 @@ const {mutation: mutationOptions} = options ?
 
 
 
-export const getDeleteStaffMutationOptions = <TError = unknown,
+export const getDeleteStaffMutationOptions = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteStaff>>, TError,{id: string}, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteStaff>>, TError,{id: string}, TContext> => {
 
@@ -381,9 +386,9 @@ const {mutation: mutationOptions} = options ?
 
     export type DeleteStaffMutationResult = NonNullable<Awaited<ReturnType<typeof deleteStaff>>>
 
-    export type DeleteStaffMutationError = unknown
+    export type DeleteStaffMutationError = ProblemDetails
 
-    export const useDeleteStaff = <TError = unknown,
+    export const useDeleteStaff = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteStaff>>, TError,{id: string}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteStaff>>,

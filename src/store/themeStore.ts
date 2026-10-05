@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export type AccentColor = 'orange' | 'blue' | 'purple' | 'green' | 'pink';
-export type ThemeVariant = 'dark' | 'midnight';
+export type ThemeVariant = 'dark' | 'midnight' | 'light';
 export type SidebarWidth = 'compact' | 'default' | 'wide';
 
 interface ThemeState {
@@ -70,6 +70,9 @@ export const variantVars: Record<ThemeVariant, Record<string, string>> = {
     '--color-bg-600': '#22222f',
     '--color-bg-500': '#2d2d3d',
     '--color-bg-400': '#3d3d52',
+    '--color-text-primary': '#ffffff',
+    '--color-text-secondary': '#94a3b8',
+    '--color-text-muted': '#64748b',
   },
   midnight: {
     '--color-bg-900': '#050509',
@@ -78,6 +81,20 @@ export const variantVars: Record<ThemeVariant, Record<string, string>> = {
     '--color-bg-600': '#17172a',
     '--color-bg-500': '#202038',
     '--color-bg-400': '#2d2d50',
+    '--color-text-primary': '#ffffff',
+    '--color-text-secondary': '#94a3b8',
+    '--color-text-muted': '#64748b',
+  },
+  light: {
+    '--color-bg-900': '#f1f5f9',
+    '--color-bg-800': '#ffffff',
+    '--color-bg-700': '#f8fafc',
+    '--color-bg-600': '#e2e8f0',
+    '--color-bg-500': '#cbd5e1',
+    '--color-bg-400': '#94a3b8',
+    '--color-text-primary': '#0f172a',
+    '--color-text-secondary': '#475569',
+    '--color-text-muted': '#94a3b8',
   },
 };
 
@@ -85,4 +102,9 @@ export function applyTheme(accent: AccentColor, variant: ThemeVariant) {
   const root = document.documentElement;
   const vars = { ...accentVars[accent], ...variantVars[variant] };
   Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
+  if (variant === 'light') {
+    root.setAttribute('data-theme', 'light');
+  } else {
+    root.removeAttribute('data-theme');
+  }
 }

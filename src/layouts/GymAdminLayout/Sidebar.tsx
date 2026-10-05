@@ -53,31 +53,29 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
 
   return (
     <aside
-      className={`
-      fixed left-0 top-0 h-full bg-dark-800 border-r border-dark-600 z-40
-      flex flex-col transition-all duration-300 ease-in-out
-      ${collapsed ? "w-16" : "w-60"}
-    `}
+      className={`fixed left-0 top-0 h-full z-40 flex flex-col transition-all duration-300 ease-in-out border-r ${collapsed ? "w-16" : "w-60"}`}
+      style={{ backgroundColor: 'var(--color-bg-800)', borderColor: 'var(--color-bg-600)' }}
     >
       {/* Logo */}
       <div
-        className={`flex items-center gap-3 px-4 py-5 border-b border-dark-600 ${collapsed ? "justify-center" : ""}`}
+        className={`flex items-center gap-3 px-4 py-5 border-b ${collapsed ? "justify-center" : ""}`}
+        style={{ borderColor: 'var(--color-bg-600)' }}
       >
         <div className="w-8 h-8 bg-gradient-to-br from-brand-500 to-brand-700 rounded-lg flex items-center justify-center flex-shrink-0">
           <Dumbbell className="w-4 h-4 text-white" />
         </div>
         {!collapsed && (
           <div>
-            <p className="font-bold text-white text-sm leading-none">GymFlow</p>
-            <p className="text-xs text-slate-500 mt-0.5">Admin Portal</p>
+            <p className="font-bold text-sm leading-none" style={{ color: 'var(--color-text-primary)' }}>GymFlow</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>Admin Portal</p>
           </div>
         )}
       </div>
 
       {/* Gym name */}
       {!collapsed && (
-        <div className="px-4 py-3 border-b border-dark-600">
-          <p className="text-xs text-slate-500">Managing</p>
+        <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--color-bg-600)' }}>
+          <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Managing</p>
           <p className="text-sm font-semibold text-brand-400 truncate">
             {user?.gymName}
           </p>
@@ -102,13 +100,13 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-dark-600 p-2 space-y-0.5">
+      <div className="border-t p-2 space-y-0.5" style={{ borderColor: 'var(--color-bg-600)' }}>
         {!collapsed && (
           <div className="px-3 py-2">
-            <p className="text-xs font-semibold text-white truncate">
+            <p className="text-xs font-semibold truncate" style={{ color: 'var(--color-text-primary)' }}>
               {user?.name}
             </p>
-            <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+            <p className="text-xs truncate" style={{ color: 'var(--color-text-muted)' }}>{user?.email}</p>
           </div>
         )}
         <button

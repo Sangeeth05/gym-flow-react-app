@@ -8,7 +8,6 @@ import {
   InventoryItem,
   Product,
   PromoCode,
-  Staff,
   MembershipPlan,
   DashboardStats,
   RecentActivity,
@@ -291,18 +290,6 @@ export const promoApi = {
       return mock.mockPromoCodes;
     }
     const res = await apiClient.get<PromoCode[]>("/promo-codes");
-    return res.data;
-  },
-};
-
-// ─── Staff ───────────────────────────────────────────────────────────────────
-export const staffApi = {
-  getAll: async (): Promise<Staff[]> => {
-    if (USE_MOCK) {
-      await delay(400);
-      return mock.mockStaff;
-    }
-    const res = await apiClient.get<Staff[]>("/staff");
     return res.data;
   },
 };

@@ -22,7 +22,7 @@ const App: React.FC = () => {
   return (
     <ConfigProvider
       theme={{
-        algorithm: antdTheme.darkAlgorithm,
+        algorithm: variant === 'light' ? antdTheme.defaultAlgorithm : antdTheme.darkAlgorithm,
         token: {
           colorPrimary: themeVars['--color-brand-500'],
           colorInfo: themeVars['--color-brand-500'],
@@ -30,9 +30,9 @@ const App: React.FC = () => {
           colorBgContainer: themeVars['--color-bg-700'],
           colorBgElevated: themeVars['--color-bg-800'],
           colorBorder: themeVars['--color-bg-500'],
-          colorText: '#ffffff',
-          colorTextSecondary: '#94a3b8',
-          colorTextPlaceholder: '#64748b',
+          colorText: themeVars['--color-text-primary'],
+          colorTextSecondary: themeVars['--color-text-secondary'],
+          colorTextPlaceholder: themeVars['--color-text-muted'],
           borderRadius: 8,
           fontFamily: 'DM Sans, sans-serif',
         },
